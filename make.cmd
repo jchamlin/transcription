@@ -1,0 +1,2 @@
+@echo off
+jar cMf transcription_v%1.zip src data docs
