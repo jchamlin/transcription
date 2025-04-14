@@ -1,0 +1,29 @@
+# Normalize all text files
+* text=auto
+
+# Python and config files
+*.py             text eol=lf
+*.pydevproject   text eol=lf
+*.project        text eol=lf
+*.prefs          text eol=lf
+*.ini            text eol=lf
+*.cmd            text eol=lf
+
+# Data and output files (treated as text)
+*.transcript     text eol=lf
+*.whisper        text eol=lf
+*.diarization    text eol=lf
+*.md             text eol=lf
+*.txt            text eol=lf
+
+# Binary files (don't normalize)
+*.pyc            binary
+*.npy            binary
+*.wav            binary
+*.WAV            binary
+*.zip            binary
+*.pack           binary
+*.idx            binary
+
+# Git & IDE metadata (just in case they're ever committed)
+*.gitignore      text eol=lf
