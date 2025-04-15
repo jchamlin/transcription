@@ -2,7 +2,7 @@ import os
 import time
 from logging_utils import info, warning, error
 from transcript_utils import load_transcript, save_transcript, format_timestamp, format_segment
-from audio_utils import get_device, get_num_threads
+from audio_utils import get_device, get_num_threads, write_file
 
 _torch_num_threads = None
 
@@ -72,6 +72,13 @@ def diarize(audio_file, use_cache=True, model_path="pyannote/speaker-diarization
             cached_lines = [format_segment(seg) for seg in cached_diarization_result]
             new_lines = [format_segment(seg) for seg in diarization]
             if cached_lines != new_lines:
+                diarization_file2 = os.path.splitext(audio_file)[0] + ".diarization2"
+                save_transcript(diarization_file2, diarization)
+                diff = "\n".join(unified_diff(cached_lines, new_lines, fromfile='cached', tofile='new', lineterm=''))
+                diff_file = os.path.splitext(audio_file)[0] + ".diarization2-diff"
+                write_file(diff_file, diff)
+                error(f"❌ Transcription output mismatch detected on {audio_file} new transcript saved to {diarization_file2} and diff to {diff_file}!")
+
                 diff = "\n".join(unified_diff(cached_lines, new_lines, fromfile='cached', tofile='new', lineterm=''))
                 error(f"❌ Diarization output mismatch detected on file {audio_file}!")
                 error(f"🔍 Diarization diff:\n" + ("-" * 40) + f"\n{diff}\n" + ("-" * 40))

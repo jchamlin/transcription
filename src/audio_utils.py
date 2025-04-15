@@ -22,3 +22,7 @@ def load_audio_file(path):
     audio = AudioSegment.from_file(path)
     _audio_cache[path] = audio
     return audio
+
+def write_file(filename, content, encoding="utf-8", newline="\n"):
+    with open(filename, "w", encoding=encoding, newline=newline) as f:
+        f.write(content)

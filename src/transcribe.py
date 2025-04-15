@@ -49,12 +49,19 @@ def transcribe(audio_file, output_format="transcript", use_cache=True, model_siz
     num_threads = num_threads or get_num_threads(device)
 
     start = time.time()
-    info(f"🔹 Transcribing {audio_file} using output_format '{output_format}' model `{model_size_or_path}` device `{device}` compute_type=`{compute_type}` num_threads=`{num_threads}`")
+    info(f"🔹 Transcribing '{audio_file}' using output_format '{output_format}' model `{model_size_or_path}` device `{device}` compute_type=`{compute_type}` num_threads=`{num_threads}`")
     if _USE_WHISPERX:
         from transcribe_and_diarize_whisperx import transcribe_and_diarize_whisperx
         merged_transcript = transcribe_and_diarize_whisperx(audio_file, model_size_or_path)
     else:
-        transcript = run_transcription(audio_file, use_cache, model_size_or_path, device=device, compute_type=compute_type, num_threads=num_threads)
+        transcript = run_transcription(
+            audio_file, 
+            use_cache=use_cache, 
+            model_size_or_path=model_size_or_path, 
+            device=device, 
+            compute_type=compute_type, 
+            num_threads=num_threads
+        )
         diarization = diarize(audio_file, use_cache)
         merged_transcript = merge_transcription_and_diarization(transcript, diarization)
         

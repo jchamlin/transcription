@@ -2,7 +2,7 @@ import os
 import time
 from logging_utils import info, error
 from transcript_utils import load_transcript, save_transcript, format_segment
-from audio_utils import get_device, get_compute_type, get_num_threads
+from audio_utils import get_device, get_compute_type, get_num_threads, write_file
 
 _transcription_models = {}
 
@@ -27,9 +27,6 @@ def get_transcription_model(model_size_or_path=None, device=None, compute_type=N
 
     if model_size_or_path not in _transcription_models:
         from faster_whisper import WhisperModel
-        device = get_device()
-        compute_type = get_compute_type(device)
-        num_threads = get_num_threads(device)
         info(f"🔄 Creating Whisper model '{model_size_or_path}' device '{device}' compute_type '{compute_type}' num_threads `{num_threads}`")
     
         _transcription_models[model_size_or_path] = {
@@ -70,7 +67,13 @@ def transcribe(audio_file, use_cache=True, model_size_or_path=None, device=None,
         info(f"🔹 Skipping transcription on {audio_file} and using cached results from {transcript_file}")
         transcript = cached_transcription_result
     else:
-        transcript = transcribe_fast_whisper(audio_file, model_size_or_path=model_size_or_path, device=device, compute_type=compute_type, num_threads=num_threads)
+        transcript = transcribe_fast_whisper(
+            audio_file, 
+            model_size_or_path=model_size_or_path, 
+            device=device, 
+            compute_type=compute_type, 
+            num_threads=num_threads
+        )
         if cached_transcription_result is None:
             save_transcript(transcript_file, transcript)
         else:
@@ -78,9 +81,12 @@ def transcribe(audio_file, use_cache=True, model_size_or_path=None, device=None,
             cached_lines = [format_segment(seg) for seg in cached_transcription_result]
             new_lines = [format_segment(seg) for seg in transcript]
             if cached_lines != new_lines:
+                transcript_file2 = os.path.splitext(audio_file)[0] + ".whisper2"
+                save_transcript(transcript_file2, transcript)
                 diff = "\n".join(unified_diff(cached_lines, new_lines, fromfile='cached', tofile='new', lineterm=''))
-                error(f"❌ Transcription output mismatch detected on {audio_file}!")
-                error(f"🔍 Transcription diff:\n" + ("-" * 40) + f"\n{diff}\n" + ("-" * 40))
+                diff_file = os.path.splitext(audio_file)[0] + ".whisper2-diff"
+                write_file(diff_file, diff)
+                error(f"❌ Transcription output mismatch detected on {audio_file} new transcript saved to {transcript_file2} and diff to {diff_file}!")
                 raise ValueError(f"Transcription output changed between runs. Reproducibility issue detected.")
 
     return transcript
@@ -99,7 +105,7 @@ def transcribe_fast_whisper(audio_file, model_size_or_path=None, device=None, co
     num_threads = num_threads or get_num_threads(device)
 
     start = time.time()
-    info(f"🔹 Running faster-whisper transcription on {audio_file} using model '{model_size_or_path}' on device '{device}` and num_threads='{num_threads}`")
+    info(f"🔹 Running faster-whisper transcription on '{audio_file}' using model '{model_size_or_path}' on device '{device}` compute_type '{compute_type}' and num_threads='{num_threads}`")
     whisper_model = get_transcription_model(
         model_size_or_path=model_size_or_path,
         device=device,
