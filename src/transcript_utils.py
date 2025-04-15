@@ -39,7 +39,7 @@ def format_segment(seg):
     return f"[{start_fmt} - {end_fmt}]{speaker_str}: {content_str}".rstrip()
 
 SEGMENT_LINE_RE = re.compile(
-    r"\[(\d+):([\d.]+) - (\d+):([\d.]+)](?: ([^:(]+?)(?: \(([\d.]+)% match\))?:)? ?(.*)"
+     r"\[(\d{2}):(\d{2}\.\d{2,3}) - (\d{2}):(\d{2}\.\d{2,3})](?: ([^:(]+?)(?: \(([\d.]+)% match\))?)?: ?(.*)"
 )
 
 def parse_segment(line):
@@ -91,7 +91,7 @@ def save_transcript(transcript_file, transcript):
     Save the transcript to the disk
     """
     info(f"🔹 Saving transcript to {transcript_file}")
-    with open(transcript_file, "w", encoding="utf-8") as f:
+    with open(transcript_file, "w", encoding="utf-8", newline="\n") as f:
         for seg in transcript:
             f.write(format_segment(seg) + "\n")
 

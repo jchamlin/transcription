@@ -24,17 +24,20 @@ def setup_torch(device=None, num_threads=None):
 
 _diarization_models = {}
 
-def get_diarization_model(model_path="pyannote/speaker-diarization"):
+def get_diarization_model(model_path="pyannote/speaker-diarization", device=None, num_threads=None):
     """
     Cache the diarization model globally to make runs on multiple files faster
     """
+    device = device or get_device()
+    num_threads = num_threads or get_num_threads(device)
+    
     if model_path not in _diarization_models:
         import torch
         from pyannote.audio.pipelines import SpeakerDiarization
     
         device = get_device()
         #device="cpu" # Force CPU
-        info(f"🔄 Creating Pyannote model '{model_path}' device '{device}'")
+        info(f"🔄 Creating Pyannote model '{model_path}' device '{device}' num_threads `{num_threads}`")
         _diarization_models[model_path] = SpeakerDiarization.from_pretrained(model_path)
         _diarization_models[model_path].to(torch.device(device))
 
@@ -42,7 +45,7 @@ def get_diarization_model(model_path="pyannote/speaker-diarization"):
     setup_torch()
     return result
 
-def diarize(audio_file, use_cache=True):
+def diarize(audio_file, use_cache=True, model_path="pyannote/speaker-diarization", device=None, num_threads=None):
     """
     Diarize an audio file.
 
@@ -50,6 +53,9 @@ def diarize(audio_file, use_cache=True):
     - audio_file (str): Path to the audio file to process.
     - skip_transcription (bool): Skip Whisper transcription step and use existing .whisper file for diarization testing.
     """
+    device = device or get_device()
+    num_threads = num_threads or get_num_threads(device)
+
     from difflib import unified_diff
 
     diarization_file = os.path.splitext(audio_file)[0] + ".diarization"
@@ -58,7 +64,7 @@ def diarize(audio_file, use_cache=True):
         info(f"🔹 Skipping diarization on {audio_file} and using cached results")
         diarization = cached_diarization_result
     else:
-        diarization = diarize_pyannote(audio_file)
+        diarization = diarize_pyannote(audio_file, model_path, device, num_threads)
         if cached_diarization_result is None:
             save_transcript(diarization_file, diarization)
         else:
@@ -67,13 +73,13 @@ def diarize(audio_file, use_cache=True):
             new_lines = [format_segment(seg) for seg in diarization]
             if cached_lines != new_lines:
                 diff = "\n".join(unified_diff(cached_lines, new_lines, fromfile='cached', tofile='new', lineterm=''))
-                error("❌ Diarization output mismatch detected!")
-                error("🔍 Diarization diff:\n" + ("-" * 40) + f"\n{diff}\n" + ("-" * 40))
+                error(f"❌ Diarization output mismatch detected on file {audio_file}!")
+                error(f"🔍 Diarization diff:\n" + ("-" * 40) + f"\n{diff}\n" + ("-" * 40))
                 raise ValueError("Diarization output changed between runs. Reproducibility issue detected.")
 
     return diarization;
 
-def diarize_pyannote(audio_file):
+def diarize_pyannote(audio_file, model_path="pyannote/speaker-diarization", device=None, num_threads=None):
     """
     Diarize (identify different speakers) the audio file using Pyannote
     See https://huggingface.co/pyannote/speaker-diarization-3.1
@@ -81,17 +87,20 @@ def diarize_pyannote(audio_file):
     Parameters:
     - audio_file (str): Path to the audio file to process.
     """
-    info(f"🔹 Running Pyannote / SpeechBrain speaker diarization on {audio_file}")
+    device = device or get_device()
+    num_threads = num_threads or get_num_threads(device)
+
+    info(f"🔹 Running Pyannote / SpeechBrain speaker diarization on {audio_file} on model `{model_path}` using device '{device}` and num_threads '{num_threads}'")
 
     start = time.time()
-    diarization_model = get_diarization_model()
+    diarization_model = get_diarization_model(model_path=model_path, device=device, num_threads=num_threads)
     diarization_result = diarization_model(audio_file)
     # Store speaker timestamps
     speaker_labels = []
     for segment, _, speaker in diarization_result.itertracks(yield_label=True):
         speaker_labels.append({
-            "start": segment.start,
-            "end": segment.end,
+            "start": round(segment.start, 3),
+            "end": round(segment.end, 3),
             "speaker": speaker
         })
     end = time.time()

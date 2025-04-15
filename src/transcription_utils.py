@@ -28,7 +28,7 @@ def get_transcription_model(model_size_or_path=None, device=None, compute_type=N
     if model_size_or_path not in _transcription_models:
         from faster_whisper import WhisperModel
         device = get_device()
-        compute_type = get_compute_type()
+        compute_type = get_compute_type(device)
         num_threads = get_num_threads(device)
         info(f"🔄 Creating Whisper model '{model_size_or_path}' device '{device}' compute_type '{compute_type}' num_threads `{num_threads}`")
     
@@ -37,7 +37,7 @@ def get_transcription_model(model_size_or_path=None, device=None, compute_type=N
                 model_size_or_path,
                 device=device,
                 compute_type=compute_type,
-                num_threads=num_threads
+                cpu_threads=num_threads
             ),
             "model_size_or_path": model_size_or_path,
             "device": device,
@@ -46,12 +46,7 @@ def get_transcription_model(model_size_or_path=None, device=None, compute_type=N
         }
 
     result = _transcription_models[model_size_or_path]
-    model = result["model"]
-    model_size_or_path = result["model_size"]
-    device = result["device"]
-    compute_type = result["compute_type"]
-
-    return model
+    return result["model"]
 
 def transcribe(audio_file, use_cache=True, model_size_or_path=None, device=None, compute_type=None, num_threads=None):
     """
@@ -75,7 +70,7 @@ def transcribe(audio_file, use_cache=True, model_size_or_path=None, device=None,
         info(f"🔹 Skipping transcription on {audio_file} and using cached results from {transcript_file}")
         transcript = cached_transcription_result
     else:
-        transcript = transcribe_fast_whisper(audio_file, use_cache=use_cache, model_size_or_path=model_size_or_path, device=device, compute_type=compute_type, num_threads=num_threads)
+        transcript = transcribe_fast_whisper(audio_file, model_size_or_path=model_size_or_path, device=device, compute_type=compute_type, num_threads=num_threads)
         if cached_transcription_result is None:
             save_transcript(transcript_file, transcript)
         else:
@@ -84,7 +79,7 @@ def transcribe(audio_file, use_cache=True, model_size_or_path=None, device=None,
             new_lines = [format_segment(seg) for seg in transcript]
             if cached_lines != new_lines:
                 diff = "\n".join(unified_diff(cached_lines, new_lines, fromfile='cached', tofile='new', lineterm=''))
-                error(f"❌ Transcription output mismatch detected in {audio_file }!")
+                error(f"❌ Transcription output mismatch detected on {audio_file}!")
                 error(f"🔍 Transcription diff:\n" + ("-" * 40) + f"\n{diff}\n" + ("-" * 40))
                 raise ValueError(f"Transcription output changed between runs. Reproducibility issue detected.")
 
@@ -104,16 +99,21 @@ def transcribe_fast_whisper(audio_file, model_size_or_path=None, device=None, co
     num_threads = num_threads or get_num_threads(device)
 
     start = time.time()
-    info(f"🔹 Running faster-whisper transcription on {audio_file} using model '{model_size_or_path}'")
-    whisper_model = get_transcription_model(model_size_or_path=model_size_or_path, device=device, compute_type=compute_type, num_threads=num_threads)
+    info(f"🔹 Running faster-whisper transcription on {audio_file} using model '{model_size_or_path}' on device '{device}` and num_threads='{num_threads}`")
+    whisper_model = get_transcription_model(
+        model_size_or_path=model_size_or_path,
+        device=device,
+        compute_type=compute_type,
+        num_threads=num_threads
+    )
     segments, _ = whisper_model.transcribe(audio_file, beam_size=5, temperature=0.0, word_timestamps=True)
     transcript = []
-    for seg in segments:
-        #debug(f"DEBUG SEG: start={seg.start}, end={seg.end}, content={seg.content[:40]}")
+    for segment in segments:
+        #debug(f"DEBUG SEG: start={segment.start}, end={segment.end}, content={segment.content[:40]}")
         transcript.append({
-            "start": seg.start,
-            "end": seg.end,
-            "content": seg.text.strip()
+            "start": round(segment.start, 3),
+            "end": round(segment.end, 3),
+            "content": segment.text.strip()
         })
     end = time.time()
     info(f"✅ Faster-whisper transcription complete in {end - start:.2f} seconds.")
