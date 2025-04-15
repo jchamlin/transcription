@@ -15,11 +15,14 @@ import argparse
 import traceback
 import logging
 from logging_utils import setup_logging, info, error
+from audio_utils import get_device, get_compute_type, get_num_threads
 from transcript_utils import save_transcript
 from transcription_utils import available_models, transcribe as run_transcription
 from diarization_utils import diarize, merge_transcription_and_diarization
 
-def transcribe(audio_file, model="medium", output_format="transcript", use_cache=True):
+_USE_WHISPERX = False
+
+def transcribe(audio_file, output_format="transcript", use_cache=True, model_size_or_path=None, device=None, compute_type=None, num_threads=None):
     """
     Executes the full transcription pipeline on a given audio file.
 
@@ -30,21 +33,28 @@ def transcribe(audio_file, model="medium", output_format="transcript", use_cache
 
     Args:
         audio_file (str): Path to the audio file to process.
-        model (str): Model used for transcription (default: "medium").
         output_format (str): Extension for the output file (e.g., .transcript, .html, .json, .xml, .md).
         use_cache (bool): Whether to reuse cached results if available.
+        model_size_or_path (str): Model used for transcription (default: "medium").
+        device (str): Device used for transcription (default: "cuda" if available, otherwise "cpu")
+        compute_type (str): Compute type used for transcription (default: "float16" if device is "cuda", otherwise "int8_float32")
+        num_threads (int): Number of threads to use for transcription (default: 1 if device is "cuda", otherwise int(os.cpu_count() / 2))
 
     Returns:
-        None
+        None (writes output to a file)
     """
-    _USE_WHISPERX = False
+    model_size_or_path = model_size_or_path or "medium"
+    device = device or get_device()
+    compute_type = compute_type or get_compute_type(device)
+    num_threads = num_threads or get_num_threads(device)
+
     start = time.time()
-    info(f"🔹 Transcribing {audio_file} using model '{model}' output_format '{output_format}'")
+    info(f"🔹Transcribing {audio_file} using output_format '{output_format}' model `{model_size_or_path}` device `{device}` compute_type=`{compute_type}` num_threads=`{num_threads}`")
     if _USE_WHISPERX:
         from transcribe_and_diarize_whisperx import transcribe_and_diarize_whisperx
-        merged_transcript = transcribe_and_diarize_whisperx(audio_file, model)
+        merged_transcript = transcribe_and_diarize_whisperx(audio_file, model_size_or_path)
     else:
-        transcript = run_transcription(audio_file, model, use_cache)
+        transcript = run_transcription(audio_file, use_cache, model_size_or_path, device=device, compute_type=compute_type, num_threads=num_threads)
         diarization = diarize(audio_file, use_cache)
         merged_transcript = merge_transcription_and_diarization(transcript, diarization)
         
@@ -54,7 +64,7 @@ def transcribe(audio_file, model="medium", output_format="transcript", use_cache
     transcript_file = os.path.splitext(audio_file)[0] + output_format
     save_transcript(transcript_file, final_transcript)
     end = time.time()
-    info(f"⏱️ Total processing time for {audio_file}: {end - start:.2f} seconds.")
+    info(f"⏱️Total processing time for {audio_file}: {end - start:.2f} seconds.")
 
 def build_arg_parser():
     """
@@ -64,10 +74,16 @@ def build_arg_parser():
         argparse.ArgumentParser: Configured parser with supported arguments.
     """
 
+    device = get_device()
+    compute_type = get_compute_type(device)
+    threads = get_num_threads(device)
     parser = argparse.ArgumentParser(description="Transcribe Audio Files.")
     parser.add_argument("files", nargs='+', help="List of audio files.")
-    parser.add_argument("--model", default="medium", help=f"Whisper model to use ({', '.join(available_models())}). Default is 'medium'.")
-    parser.add_argument("--format", default=".transcript", help="Output file extension (e.g., .transcript, .html, .json, .xml, .md). Default is '.transcript'.")
+    parser.add_argument("-f", "--format", dest="output_format", default=".transcript", help="Output file extension (e.g., .transcript, .html, .json, .xml, .md). Default is '.transcript'.")
+    parser.add_argument("-m", "--model", dest="model_size_or_path", default="medium", help=f"Whisper model to use ({', '.join(available_models())}). Default is 'medium'.")
+    parser.add_argument("-d", "--device", default=device, help=f"Device to use: cuda or cpu. Default is `{device}`.")
+    parser.add_argument("-c", "--compute-type", default=compute_type, help=f"Whisper compute_type to use, Default is `{compute_type}`.")
+    parser.add_argument("-t", "--threads", dest="num_threads", type=int, default=threads, help=f"Number of threads to use in CPU mode. Default is `{threads}`.")
     parser.add_argument("--use-cache", dest="use_cache", action="store_true", help="Use cached transcription and diarization results if available (default: True)")
     parser.add_argument("--no-cache", dest="use_cache", action="store_false", help="Disable cache use and always regenerate results.")
     parser.set_defaults(use_cache=True)
@@ -87,17 +103,18 @@ def main():
         return
 
     # Validate model name after parsing
-    if args.model not in available_models():
-        parser.error(f"Invalid model '{args.model}'. Supported: {', '.join(available_models())}")
+    if args.model_size_or_path not in available_models():
+        parser.error(f"Invalid model '{args.model_size_or_path}'. Supported: {', '.join(available_models())}")
         return
 
-    output_format = args.format
-    if not output_format.startswith("."):
-        output_format = "." + output_format
+    if not args.output_format.startswith("."):
+        args.output_format = "." + args.output_format
 
+    transcribe_args = {k: v for k, v in vars(args).items() if k != "files"}
+  
     for file in args.files:
         try:
-            transcribe(file, model=args.model, output_format=output_format, use_cache=args.use_cache)
+            transcribe(file, **transcribe_args)
         except Exception as e:
             error(f"❌ Failed to transcribe {file}: {e}")
             error(traceback.format_exc())  # Captures full traceback as a string and logs it

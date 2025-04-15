@@ -2,7 +2,7 @@ import os
 import time
 from logging_utils import info, error
 from transcript_utils import load_transcript, save_transcript, format_segment
-from audio_utils import get_device, get_compute_type, setup_torch
+from audio_utils import get_device, get_compute_type, get_num_threads
 
 _transcription_models = {}
 
@@ -16,50 +16,57 @@ def available_models():
     from faster_whisper import available_models as faster_whisper_available_models
     return faster_whisper_available_models()
 
-def get_transcription_model(model_size="medium"):
+def get_transcription_model(model_size_or_path=None, device=None, compute_type=None, num_threads=None):
     """
     Cache the transcription model globally to make runs on multiple files faster
     """
-    if model_size not in _transcription_models:
+    model_size_or_path = model_size_or_path or "medium"
+    device = device or get_device()
+    compute_type = compute_type or get_compute_type(device)
+    num_threads = num_threads or get_num_threads(device)
+
+    if model_size_or_path not in _transcription_models:
         from faster_whisper import WhisperModel
         device = get_device()
         compute_type = get_compute_type()
-        info(f"🔄 Creating Whisper model '{model_size}' device '{device}' compute_type '{compute_type}'")
+        num_threads = get_num_threads(device)
+        info(f"🔄 Creating Whisper model '{model_size_or_path}' device '{device}' compute_type '{compute_type}' num_threads `{num_threads}`")
     
-        _transcription_models[model_size] = {
+        _transcription_models[model_size_or_path] = {
             "model": WhisperModel(
-                model_size,
+                model_size_or_path,
                 device=device,
-                compute_type=compute_type
+                compute_type=compute_type,
+                num_threads=num_threads
             ),
-            "model_size": model_size,
+            "model_size_or_path": model_size_or_path,
             "device": device,
-            "compute_type": compute_type
+            "compute_type": compute_type,
+            "num_threads": num_threads
         }
 
-    result = _transcription_models[model_size]
+    result = _transcription_models[model_size_or_path]
     model = result["model"]
-    model_size = result["model_size"]
+    model_size_or_path = result["model_size"]
     device = result["device"]
     compute_type = result["compute_type"]
-    
-    if device == "cpu":
-        setup_torch()
-    else:
-        setup_torch(1)
 
     return model
 
-
-def transcribe(audio_file, model="medium", use_cache=True):
+def transcribe(audio_file, use_cache=True, model_size_or_path=None, device=None, compute_type=None, num_threads=None):
     """
     Transcribe an audio file.
 
     Parameters:
     - audio_file (str): Path to the audio file to process.
-    - model (str): The Whisper model to use (default: "medium").
+    - model_size_or_path (str): The Whisper model_size_or_path to use (default: "medium").
     - use_cache (bool): Skip Whisper transcription step and use existing cached .whisper file
     """
+    model_size_or_path = model_size_or_path or "medium"
+    device = device or get_device()
+    compute_type = compute_type or get_compute_type(device)
+    num_threads = num_threads or get_num_threads(device)
+
     from difflib import unified_diff
 
     transcript_file = os.path.splitext(audio_file)[0] + ".whisper"
@@ -68,7 +75,7 @@ def transcribe(audio_file, model="medium", use_cache=True):
         info(f"🔹 Skipping transcription on {audio_file} and using cached results from {transcript_file}")
         transcript = cached_transcription_result
     else:
-        transcript = transcribe_fast_whisper(audio_file, model)
+        transcript = transcribe_fast_whisper(audio_file, use_cache=use_cache, model_size_or_path=model_size_or_path, device=device, compute_type=compute_type, num_threads=num_threads)
         if cached_transcription_result is None:
             save_transcript(transcript_file, transcript)
         else:
@@ -77,34 +84,13 @@ def transcribe(audio_file, model="medium", use_cache=True):
             new_lines = [format_segment(seg) for seg in transcript]
             if cached_lines != new_lines:
                 diff = "\n".join(unified_diff(cached_lines, new_lines, fromfile='cached', tofile='new', lineterm=''))
-                error("❌ Transcription output mismatch detected!")
-                error("🔍 Transcription diff:\n" + ("-" * 40) + f"\n{diff}\n" + ("-" * 40))
-                raise ValueError("Transcription output changed between runs. Reproducibility issue detected.")
+                error(f"❌ Transcription output mismatch detected in {audio_file }!")
+                error(f"🔍 Transcription diff:\n" + ("-" * 40) + f"\n{diff}\n" + ("-" * 40))
+                raise ValueError(f"Transcription output changed between runs. Reproducibility issue detected.")
 
     return transcript
 
-def transcribe_openai_whisper(audio_file, model):
-    """
-    Transcribe the audio file using OpenAI Whisper
-
-    Parameters:
-    - audio_file (str): Path to the audio file to process.
-    - model (str): The Whisper model to use (default: "medium").
-    """
-    import whisper
-
-    start = time.time()
-    device = "cpu" # Force CPU for OpenAI Whisper since it's faster than GPU
-    info(f"🔹 Running OpenAI Whisper transcription on {audio_file} model '{model}' using device '{device}'")
-    setup_torch(1) # force threads to 1 even if in CPU mode, adding more threads makes this slower, not faster. 16 threads is 4x slower than 1 thread.
-    whisper_model = whisper.load_model(model).to(device)
-    whisper_result = whisper_model.transcribe(audio_file, fp16=(device == "cuda"))
-    transcript = whisper_result["segments"]
-    end = time.time()
-    info(f"✅ OpenAI Whisper transcription complete in {end - start:.2f} seconds.")
-    return transcript
-
-def transcribe_fast_whisper(audio_file, model):
+def transcribe_fast_whisper(audio_file, model_size_or_path=None, device=None, compute_type=None, num_threads=None):
     """
     Transcribe the audio file using faster-whisper for improved performance.
 
@@ -112,9 +98,14 @@ def transcribe_fast_whisper(audio_file, model):
     - audio_file (str): Path to the audio file to process.
     - model (str): The Whisper model to use (default: "medium").
     """
+    model_size_or_path = model_size_or_path or "medium"
+    device = device or get_device()
+    compute_type = compute_type or get_compute_type(device)
+    num_threads = num_threads or get_num_threads(device)
+
     start = time.time()
-    info(f"🔹 Running faster-whisper transcription on {audio_file} using model '{model}'")
-    whisper_model = get_transcription_model(model)
+    info(f"🔹 Running faster-whisper transcription on {audio_file} using model '{model_size_or_path}'")
+    whisper_model = get_transcription_model(model_size_or_path=model_size_or_path, device=device, compute_type=compute_type, num_threads=num_threads)
     segments, _ = whisper_model.transcribe(audio_file, beam_size=5, temperature=0.0, word_timestamps=True)
     transcript = []
     for seg in segments:

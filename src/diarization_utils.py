@@ -2,7 +2,25 @@ import os
 import time
 from logging_utils import info, warning, error
 from transcript_utils import load_transcript, save_transcript, format_timestamp, format_segment
-from audio_utils import get_device, setup_torch
+from audio_utils import get_device, get_num_threads
+
+_torch_num_threads = None
+
+def setup_torch(device=None, num_threads=None):
+    """
+    Setup the number of threads torch should use 
+    """
+    device = device or get_device()
+    num_threads = num_threads or get_num_threads(device)
+    global _torch_num_threads
+    
+    import torch
+    if _torch_num_threads is None or _torch_num_threads != num_threads:
+        info(f"🔹 Configuring Torch device {device} for {num_threads} threads")
+        torch.set_num_threads(num_threads)
+        _torch_num_threads = num_threads
+
+    return
 
 _diarization_models = {}
 
