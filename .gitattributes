@@ -8,11 +8,17 @@
 *.prefs          text eol=lf
 *.ini            text eol=lf
 *.cmd            text eol=lf
+*.gitattributes  text eol=lf
 
 # Data and output files (treated as text)
 *.transcript     text eol=lf
+*.transcript2    text eol=lf
 *.whisper        text eol=lf
+*.whisper2       text eol=lf
+*.whisper2-diff  text eol=lf
 *.diarization    text eol=lf
+*.diarization2   text eol=lf
+*.diarization2-diff text eol=lf
 *.md             text eol=lf
 *.txt            text eol=lf
 

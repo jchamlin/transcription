@@ -20,14 +20,14 @@ def transcribe_and_diarize_whisperx(audio_file, model="medium", language_code="e
     import torch
     import whisperx
     import pandas as pd
-    from audio_utils import setup_torch
+    from diarize_pyannote import set_processing_threads
     from logging_utils import info, warning
 
     start = time.time()
     device = "cuda" if torch.cuda.is_available() else "cpu"
     info(f"🔹 Running WhisperX transcription on {audio_file} using transcription_model '{model}' and device '{device}'")
 
-    setup_torch(1)
+    set_processing_threads(1)
     transcription_model = whisperx.load_model(model, device, language=language_code)
     raw_result = transcription_model.transcribe(audio_file)
 

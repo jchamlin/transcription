@@ -5,7 +5,7 @@ import argparse
 import time
 import atexit
 from logging_utils import setup_logging, debug, info, warning
-from diarization_utils import diarize
+from diarize_pyannote import diarize
 from transcript_utils import load_transcript, format_timestamp, format_segment
 
 temporary_files = []

@@ -15,10 +15,10 @@ import argparse
 import traceback
 import logging
 from logging_utils import setup_logging, info, error
-from audio_utils import get_device, get_compute_type, get_num_threads
+from torch_utils import get_device, get_compute_type, get_num_threads
 from transcript_utils import save_transcript
-from transcription_utils import available_models, transcribe as run_transcription
-from diarization_utils import diarize, merge_transcription_and_diarization
+from transcribe_faster_whisper import get_available_models, transcribe as run_transcription
+from diarize_pyannote import diarize, merge_transcription_and_diarization
 
 _USE_WHISPERX = False
 
@@ -49,7 +49,7 @@ def transcribe(audio_file, output_format="transcript", use_cache=True, model_siz
     num_threads = num_threads or get_num_threads(device)
 
     start = time.time()
-    info(f"🔹 Transcribing '{audio_file}' using output_format '{output_format}' model `{model_size_or_path}` device `{device}` compute_type=`{compute_type}` num_threads=`{num_threads}`")
+    info(f"🔹 Transcribing '{audio_file}' using output_format '{output_format}' model '{model_size_or_path}' device '{device}' compute_type='{compute_type}' num_threads='{num_threads}'")
     if _USE_WHISPERX:
         from transcribe_and_diarize_whisperx import transcribe_and_diarize_whisperx
         merged_transcript = transcribe_and_diarize_whisperx(audio_file, model_size_or_path)
@@ -87,15 +87,15 @@ def build_arg_parser():
     parser = argparse.ArgumentParser(description="Transcribe Audio Files.")
     parser.add_argument("files", nargs='+', help="List of audio files.")
     parser.add_argument("-f", "--format", dest="output_format", default=".transcript", help="Output file extension (e.g., .transcript, .html, .json, .xml, .md). Default is '.transcript'.")
-    parser.add_argument("-m", "--model", dest="model_size_or_path", default="medium", help=f"Whisper model to use ({', '.join(available_models())}). Default is 'medium'.")
-    parser.add_argument("-d", "--device", default=device, help=f"Device to use: cuda or cpu. Default is `{device}`.")
-    parser.add_argument("-c", "--compute-type", default=compute_type, help=f"Whisper compute_type to use, Default is `{compute_type}`.")
-    parser.add_argument("-t", "--threads", dest="num_threads", type=int, default=threads, help=f"Number of threads to use in CPU mode. Default is `{threads}`.")
+    parser.add_argument("-m", "--model", dest="model_size_or_path", default=None, help=f"Whisper model to use ({', '.join(get_available_models())}). Default is 'medium'.")
+    parser.add_argument("-d", "--device", default=None, help=f"Device to use: cuda or cpu. Default is '{device}'.")
+    parser.add_argument("-c", "--compute-type", default=None, help=f"Whisper compute_type to use, Default is '{compute_type}'.")
+    parser.add_argument("-t", "--threads", dest="num_threads", type=int, default=None, help=f"Number of threads to use in CPU mode. Default is '{threads}'.")
     parser.add_argument("--use-cache", dest="use_cache", action="store_true", help="Use cached transcription and diarization results if available (default: True)")
     parser.add_argument("--no-cache", dest="use_cache", action="store_false", help="Disable cache use and always regenerate results.")
     parser.set_defaults(use_cache=True)
     return parser
-  
+
 def main():
     """
     Main entry point for CLI execution. Parses arguments and runs the pipeline
@@ -109,9 +109,8 @@ def main():
         parser.print_help()
         return
 
-    # Validate model name after parsing
-    if args.model_size_or_path not in available_models():
-        parser.error(f"Invalid model '{args.model_size_or_path}'. Supported: {', '.join(available_models())}")
+    if args.model_size_or_path and args.model_size_or_path not in get_available_models():
+        parser.error(f"Invalid model '{args.model_size_or_path}'. Supported: {', '.join(get_available_models())}")
         return
 
     if not args.output_format.startswith("."):

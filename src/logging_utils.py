@@ -4,7 +4,7 @@ import logging
 import sys
 import warnings
 
-# Fixes warning: Requested Pretrainer collection using symlinks on Windows. This might not work; see `LocalStrategy` documentation. Consider unsetting `collect_in` in Pretrainer to avoid symlinking altogether.
+# Fixes warning: Requested Pretrainer collection using symlinks on Windows. This might not work; see 'LocalStrategy' documentation. Consider unsetting 'collect_in' in Pretrainer to avoid symlinking altogether.
 os.environ["SB_FORCE_LOCAL_STRATEGY"] = "true"
 
 # Filters out specific Pyannote version mismatch messages printed to stdout

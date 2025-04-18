@@ -1,28 +1,9 @@
-import os
-
-def get_device():
-    import torch
-    device = "cuda" if torch.cuda.is_available() else "cpu"
-    return device
-
-def get_compute_type(device):
-    compute_type = "float16" if device == "cuda" else "int8_float32"
-    return compute_type
-
-def get_num_threads(device):
-    num_threads = 1 if device == "cuda" else int(os.cpu_count() / 2)
-    return num_threads
-
-_audio_cache = {}
+_audio_file_cache = {}
 
 def load_audio_file(path):
     from pydub import AudioSegment
-    if path in _audio_cache:
-        return _audio_cache[path]
+    if path in _audio_file_cache:
+        return _audio_file_cache[path]
     audio = AudioSegment.from_file(path)
-    _audio_cache[path] = audio
+    _audio_file_cache[path] = audio
     return audio
-
-def write_file(filename, content, encoding="utf-8", newline="\n"):
-    with open(filename, "w", encoding=encoding, newline=newline) as f:
-        f.write(content)
