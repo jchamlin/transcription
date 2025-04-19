@@ -14,11 +14,11 @@ import time
 import argparse
 import traceback
 import logging
-from logging_utils import setup_logging, info, error
-from torch_utils import get_device, get_compute_type, get_num_threads
-from transcript_utils import save_transcript
-from transcribe_faster_whisper import get_available_models, transcribe as run_transcription
-from diarize_pyannote import diarize, merge_transcription_and_diarization
+from utils.logging_utils import setup_logging, info, error
+from compute_providers.torch_utils import get_device, get_compute_type, get_num_threads
+from utils.transcript_utils import save_transcript
+from processors.transcribe_faster_whisper import get_available_models, transcribe as run_transcription
+from processors.diarize_pyannote import diarize, merge_transcription_and_diarization
 
 _USE_WHISPERX = False
 
@@ -51,7 +51,7 @@ def transcribe(audio_file, output_format="transcript", use_cache=True, model_siz
     start = time.time()
     info(f"🔹 Transcribing '{audio_file}' using output_format '{output_format}' model '{model_size_or_path}' device '{device}' compute_type='{compute_type}' num_threads='{num_threads}'")
     if _USE_WHISPERX:
-        from transcribe_and_diarize_whisperx import transcribe_and_diarize_whisperx
+        from processors import transcribe_and_diarize_whisperx.transcribe_and_diarize_whisperx
         merged_transcript = transcribe_and_diarize_whisperx(audio_file, model_size_or_path)
     else:
         transcript = run_transcription(

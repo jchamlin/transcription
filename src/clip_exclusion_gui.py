@@ -20,7 +20,8 @@ import threading
 import tkinter as tk
 from tkinter import ttk, messagebox
 from datetime import datetime
-from logging_utils import setup_logging, debug, info, error
+from utils.file_utils import read_file, write_file
+from utils.logging_utils import setup_logging, debug, info, error
 
 EXCLUSION_OPTIONS = [
     "too_short", "too_quiet", "clipped", "multiple_speakers", "low_confidence",
@@ -303,21 +304,7 @@ def scan_training_clips(mgr: ExclusionManager, embeddings, root, done_callback):
             error(f"Exception in scan thread: {e}", exc_info=True)
 
     threading.Thread(target=run, daemon=True).start()
-
-
-def load_geometry(root):
-    try:
-        with open("window_geometry.txt", "r") as f:
-            geometry = f.read().strip()
-        root.geometry(geometry)
-    except FileNotFoundError:
-        root.geometry("1920x1000")
-
-def save_geometry(root):
-    geometry = root.geometry()
-    with open("window_geometry.txt", "w") as f:
-        f.write(geometry)
-      
+     
 def main():
     setup_logging()
     parser = argparse.ArgumentParser()
@@ -344,14 +331,16 @@ def main():
     root.deiconify()
     root.title(f"Clip Exclusion Manager — {speaker}")
 
-    load_geometry(root)
+    script_name = os.path.splitext(os.path.basename(__file__))[0]
+    geometry_file_name = f"../{script_name}_geometry.txt"
+    debug(f"Loading geometry from {geometry_file_name}")
+    geometry = read_file(geometry_file_name)
+    root.geometry(geometry)
 
     def on_close():
-        # Save window geometry (position + size)
-        debug(f"Saving geometry")
+        debug(f"Saving geometry to {geometry_file_name}")
         geometry = root.geometry()
-        with open("window_geometry.txt", "w") as f:
-            f.write(geometry)
+        write_file(geometry_file_name, geometry)
         root.destroy()
 
     root.protocol("WM_DELETE_WINDOW", on_close)
