@@ -4,9 +4,13 @@ import re
 import argparse
 import time
 import atexit
-from utils.logging_utils import setup_logging, debug, info, warning
+import logging
+from utils import setup_logging, suppress_noisy_audio_processing_output, load_transcript, format_timestamp, format_segment
 from processors.diarize_pyannote import diarize
-from utils.transcript_utils import load_transcript, format_timestamp, format_segment
+
+script_name = os.path.splitext(os.path.basename(__file__))[0]
+logger = setup_logging(script_name)
+suppress_noisy_audio_processing_output()
 
 temporary_files = []
 
@@ -19,6 +23,7 @@ def mark_for_deletion(path):
     """
     temporary_files.append(path)
 
+
 def cleanup():
     """
     Deletes all files that were marked for deletion.
@@ -26,9 +31,11 @@ def cleanup():
     for path in temporary_files:
         if os.path.exists(path):
             os.remove(path)
-            info(f"🗑️ Deleted temporary file: {path}")
+            logger.info(f"🗑️ Deleted temporary file: {path}")
+
 
 atexit.register(cleanup)
+
 
 def convert_to_pcm_s16le_if_needed(audio_path):
     """
@@ -53,15 +60,17 @@ def convert_to_pcm_s16le_if_needed(audio_path):
     converted_path = f"{base} (pcm_s16le){ext}"
 
     if not os.path.exists(converted_path):
-        info(f"🔄 Converting {audio_path} to standard PCM format...")
+        logger.info(f"🔄 Converting {audio_path} to standard PCM format...")
         convert_cmd = ["ffmpeg", "-y", "-i", audio_path, "-acodec", "pcm_s16le", "-ar", "48000", "-ac", "1", converted_path]
         subprocess.run(convert_cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        info(f"✅ Converted and saved to {converted_path}")
+        logger.info(f"✅ Converted and saved to {converted_path}")
         mark_for_deletion(converted_path)
 
     return converted_path
 
+
 padding = 50
+
 
 def extract_training_audio(audio_file, transcript_file, output_dir, exclude_file=None):
     """
@@ -93,7 +102,7 @@ def extract_training_audio(audio_file, transcript_file, output_dir, exclude_file
     if all_slice_files:
         slices_newer = all(os.path.getmtime(f) > max(audio_mtime, transcript_mtime) for f in all_slice_files)
         if slices_newer:
-            info("⚡ Skipping audio extraction: all slices already up to date.")
+            logger.info("⚡ Skipping audio extraction: all slices already up to date.")
             exported = []
             for f in all_slice_files:
                 match = re.search(r"\((\d{3}) ", os.path.basename(f))
@@ -108,10 +117,10 @@ def extract_training_audio(audio_file, transcript_file, output_dir, exclude_file
                         "path": f
                     })
             exported.sort(key=lambda x: x["index"])
-            info(f"↩️ Reusing {len(exported)} previously extracted slices.")
+            logger.info(f"↩️ Reusing {len(exported)} previously extracted slices.")
             return exported
   
-    info(f"🔹 Extracting training audio from audio file '{audio_file}' using transcript file '{transcript_file}' and writing training slices to '{output_dir}'")
+    logger.info(f"🔹 Extracting training audio from audio file '{audio_file}' using transcript file '{transcript_file}' and writing training slices to '{output_dir}'")
     os.makedirs(output_dir, exist_ok=True)
 
     input_basename = os.path.splitext(os.path.basename(audio_file))[0]
@@ -134,13 +143,13 @@ def extract_training_audio(audio_file, transcript_file, output_dir, exclude_file
         start_ms = segment["start"] * 1000
         end_ms = segment["end"] * 1000
         if start_ms >= end_ms:
-            warning(f"⚠️ Skipping transcript line {i+1}: start >= end → {format_timestamp(segment['start'])}–{format_timestamp(segment['end'])}")
+            logger.warning(f"⚠️ Skipping transcript line {i+1}: start >= end → {format_timestamp(segment['start'])}–{format_timestamp(segment['end'])}")
             continue
 
         segment_speaker = segment["speaker"]
         speaker_folder_name = re.sub(r'[<>:"/\\|?*]', '_', segment["speaker"].strip())
         speaker_folder = os.path.join(output_dir, speaker_folder_name + "_training_audio")
-        debug(f"segment_speaker = {segment_speaker} speaker_folder_name = {speaker_folder_name} speaker_folder = {speaker_folder}")
+        logger.debug(f"segment_speaker = {segment_speaker} speaker_folder_name = {speaker_folder_name} speaker_folder = {speaker_folder}")
         os.makedirs(speaker_folder, exist_ok=True)
 
         segment_audio = audio[max(0, int(start_ms - padding)):min(len(audio), int(end_ms + padding))]
@@ -158,8 +167,9 @@ def extract_training_audio(audio_file, transcript_file, output_dir, exclude_file
         })
 
     end = time.time()
-    info(f"✅ Extract training audio complete in {end - start:.2f} seconds.")
+    logger.info(f"✅ Extract training audio complete in {end - start:.2f} seconds.")
     return exported
+
 
 def diarize_training_audio(exported):
     """
@@ -182,9 +192,9 @@ def diarize_training_audio(exported):
         expected_duration = (segment["end"] - segment["start"]) + (2 * padding / 1000)
 
         if abs(audio_duration - expected_duration) > 0.01:
-            warning(f"⚠️ Audio duration mismatch for {filename}: expected {expected_duration:.3f}s, got {audio_duration:.3f}s")
+            logger.warning(f"⚠️ Audio duration mismatch for {filename}: expected {expected_duration:.3f}s, got {audio_duration:.3f}s")
         else:
-            info(f"🧪 Exported audio duration for {filename}: {audio_duration:.3f}s (✔ matches expected {expected_duration:.3f}s)")
+            logger.info(f"🧪 Exported audio duration for {filename}: {audio_duration:.3f}s (✔ matches expected {expected_duration:.3f}s)")
 
         diarization_result = diarize(output_path)
         adjusted_turns = []
@@ -196,9 +206,9 @@ def diarize_training_audio(exported):
             absolute_start = max(segment["start"], rel_start + segment["start"])
             absolute_end = min(segment["end"], rel_end + segment["start"])
             if absolute_start < segment["start"]:
-                warning(f"🚨 Even after clipping, adjusted start {absolute_start:.3f}s < segment start {segment['start']:.3f}s")
+                logger.warning(f"🚨 Even after clipping, adjusted start {absolute_start:.3f}s < segment start {segment['start']:.3f}s")
             if absolute_end > segment["end"]:
-                warning(f"🚨 Even after clipping, adjusted end {absolute_end:.3f}s > segment end {segment['end']:.3f}s")
+                logger.warning(f"🚨 Even after clipping, adjusted end {absolute_end:.3f}s > segment end {segment['end']:.3f}s")
 
             overlap_start = max(rel_start, 0)
             overlap_end = min(rel_end, seg_dur)
@@ -220,9 +230,10 @@ def diarize_training_audio(exported):
             multi_speaker_flags.append(f"\n📄 {filename}\n" + "\n".join(lines))
 
     if multi_speaker_flags:
-        warning("\n⚠️ Summary of multi-speaker detections:\n" + "\n\n".join(multi_speaker_flags))
+        logger.warning("\n⚠️ Summary of multi-speaker detections:\n" + "\n\n".join(multi_speaker_flags))
     else:
-        info("✅ No multi-speaker segments detected.")
+        logger.info("✅ No multi-speaker segments detected.")
+
 
 def create_speaker_embeddings(exported, output_dir):
     """
@@ -236,17 +247,16 @@ def create_speaker_embeddings(exported, output_dir):
     import numpy as np
     from speechbrain.pretrained import EncoderClassifier
 
-
     slice_paths = [e["path"] for e in exported]
     embedding_paths = [os.path.join(output_dir, f) for f in os.listdir(output_dir) if f.endswith("_embedding.npy")]
     if slice_paths and embedding_paths:
         latest_slice = max(os.path.getmtime(p) for p in slice_paths)
         all_embeddings_newer = all(os.path.getmtime(ep) > latest_slice for ep in embedding_paths)
         if all_embeddings_newer:
-            info("⚡ Skipping speaker embedding: embeddings are already up to date.")
+            logger.info("⚡ Skipping speaker embedding: embeddings are already up to date.")
             return
 
-    info("🎤 Generating speaker embeddings using SpeechBrain...")
+    logger.info("🎤 Generating speaker embeddings using SpeechBrain...")
     classifier = EncoderClassifier.from_hparams(source="speechbrain/spkrec-ecapa-voxceleb", run_opts={"device": "cpu"})
     speaker_segments = {}
 
@@ -267,7 +277,8 @@ def create_speaker_embeddings(exported, output_dir):
             avg_embedding = np.mean(embeddings, axis=0)
             embed_path = os.path.join(output_dir, f"{speaker}_embedding.npy")
             np.save(embed_path, avg_embedding)
-            info(f"✅ Saved speaker embedding for {speaker} → {embed_path}")
+            logger.info(f"✅ Saved speaker embedding for {speaker} → {embed_path}")
+
 
 def verify_speaker_embeddings(output_dir):
     """
@@ -282,7 +293,7 @@ def verify_speaker_embeddings(output_dir):
     from scipy.spatial.distance import cosine
 
     classifier = EncoderClassifier.from_hparams(source="speechbrain/spkrec-ecapa-voxceleb", run_opts={"device": "cpu"})
-    info("🔎 Verifying speaker identities for extracted training slices...")
+    logger.info("🔎 Verifying speaker identities for extracted training slices...")
 
     # Load all speaker embeddings from the output_dir
     embeddings = {}
@@ -316,35 +327,70 @@ def verify_speaker_embeddings(output_dir):
                 mismatches.append((file, expected, detected, best_score))
 
     for file, expected, detected, score in mismatches:
-        warning(f"❌ {file}: expected {expected}, detected {detected} (score: {score:.4f})")
+        logger.warning(f"❌ {file}: expected {expected}, detected {detected} (score: {score:.4f})")
 
     if not mismatches:
-        info("✅ All speaker slices matched their expected embeddings.")
+        logger.info("✅ All speaker slices matched their expected embeddings.")
     else:
-        warning(f"⚠️ {len(mismatches)} mismatches found during speaker verification.")
+        logger. warning(f"⚠️ {len(mismatches)} mismatches found during speaker verification.")
 
-def main():
+
+from argparse import ArgumentError
+
+def validate_args(args):
+    """
+    Validates that all required input and output paths exist and are of the correct type.
+
+    Args:
+        args (argparse.Namespace): Parsed command-line arguments.
+
+    Raises:
+        ArgumentError: If any path is invalid or missing.
+    """
+    if not os.path.isfile(args.audio_file):
+        raise ArgumentError(None, f"Audio file '{args.audio_file}' does not exist or is not a file.")
+    if not os.path.isfile(args.transcript_file):
+        raise ArgumentError(None, f"Transcript file '{args.transcript_file}' does not exist or is not a file.")
+    if not os.path.isdir(args.output_dir):
+        raise ArgumentError(None, f"Output directory '{args.output_dir}' does not exist or is not a directory.")
+    if args.exclude_file and not os.path.isfile(args.exclude_file):
+        raise ArgumentError(None, f"Exclusion file '{args.exclude_file}' does not exist or is not a file.")
+
+def execute(args):
+    validate_args(args)
+    extracted_slices = extract_training_audio(args.audio_file, args.transcript_file, args.output_dir, args.exclude_file)
+    diarize_training_audio(extracted_slices)
+    create_speaker_embeddings(extracted_slices, args.output_dir)
+    verify_speaker_embeddings(args.output_dir)
+
+
+def build_arg_parser():
+    parser = argparse.ArgumentParser(description="Extract training audio by speaker from audio and labeled transcript.")
+    parser.add_argument("audio_file", help="Path to the input audio file")
+    parser.add_argument("transcript_file", help="Path to the clean transcript file")
+    parser.add_argument("output_dir", help="Directory where extracted segments will be saved")
+    parser.add_argument("--exclude-file", help="Optional path to exclusion list (one-based line numbers)", default=None)
+    return parser
+
+
+def main(argv=None):
     """
     Main entry point for the training audio extraction pipeline.
 
     Parses command-line arguments, extracts speaker-specific audio clips,
     optionally performs diarization verification, and builds/verifies speaker embeddings.
     """
-    setup_logging()
-    parser = argparse.ArgumentParser(description="Extract training audio by speaker from audio and labeled transcript.")
-    parser.add_argument("audio_file", help="Path to the input audio file")
-    parser.add_argument("transcript_file", help="Path to the manual .tmp transcript file")
-    parser.add_argument("output_dir", help="Directory where extracted segments will be saved")
-    parser.add_argument("--exclude-file", help="Optional path to exclusion list (one-based line numbers)", default=None)
-    parser.add_argument("--diarize-check", action="store_true", help="Run diarization check on extracted segments")
-    args = parser.parse_args()
+    args = None
+    try:
+        parser = build_arg_parser()
+        args = parser.parse_args(argv)
+        execute(args)
+    except ArgumentError as ae:
+        parser.error(str(ae))
+    except Exception:
+        logging.basicConfig(level=logging.DEBUG)
+        logging.exception(f"❌ Unhandled exception in main({args})")
 
-    extracted_slices = extract_training_audio(args.audio_file, args.transcript_file, args.output_dir, args.exclude_file)
-    if args.diarize_check:
-        diarize_training_audio(extracted_slices)
-
-    create_speaker_embeddings(extracted_slices, args.output_dir)
-    verify_speaker_embeddings(args.output_dir)
 
 if __name__ == "__main__":
     main()

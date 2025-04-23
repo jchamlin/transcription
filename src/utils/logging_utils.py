@@ -3,58 +3,33 @@ import io
 import logging
 import sys
 import warnings
-from enum import Enum
 
 # Fixes warning: Requested Pretrainer collection using symlinks on Windows. This might not work; see 'LocalStrategy' documentation. Consider unsetting 'collect_in' in Pretrainer to avoid symlinking altogether.
 os.environ["SB_FORCE_LOCAL_STRATEGY"] = "true"
 
-
-# Filters out specific Pyannote version mismatch messages printed to stdout
-class SuppressionTarget(Enum):
-    STDOUT = "stdout"
-    STDERR = "stderr"
-    WARNING = "warning"
-    LOGGING = "logging"
-
-
-# Filters out specific messages from stdout
 class FilteredStdout(io.TextIOBase):
-    suppress_phrases = set([
-        "Model was trained with pyannote.audio",
-        "Model was trained with torch",
-        ">>Performing voice activity detection",
-    ])
-
-    def __init__(self, original):
-        self.original = original
-        self._suppress_next_newline = False
-
-    def write(self, message):
-        if self._suppress_next_newline and message == "\n":
-            self._suppress_next_newline = False
-            return
-
-        if any(phrase in message for phrase in self.suppress_phrases):
-            self._suppress_next_newline = True
-            return
-
-        return self.original.write(message)
-
-    def flush(self):
-        return self.original.flush()
-
-
-sys.stdout = FilteredStdout(sys.stdout)
-
-
-class FilteredStderr(io.TextIOBase):
+    """
+    A wrapper for stdout that filters out suppressed phrases.
+    """
     suppress_phrases = set()
 
     def __init__(self, original):
+        """
+        Initializes the filtered stdout.
+
+        Args:
+            original (io.TextIOBase): The original stdout stream.
+        """
         self.original = original
         self._suppress_next_newline = False
 
     def write(self, message):
+        """
+        Writes a message to stdout unless it matches a suppressed phrase.
+
+        Args:
+            message (str): The message to write.
+        """
         if self._suppress_next_newline and message == "\n":
             self._suppress_next_newline = False
             return
@@ -66,71 +41,157 @@ class FilteredStderr(io.TextIOBase):
         return self.original.write(message)
 
     def flush(self):
+        """
+        Flushes the underlying stdout stream.
+        """
         return self.original.flush()
 
+sys.stdout = FilteredStdout(sys.stdout)
+
+class FilteredStderr(io.TextIOBase):
+    """
+    A wrapper for stderr that filters out suppressed phrases.
+    """
+    suppress_phrases = set()
+
+    def __init__(self, original):
+        """
+        Initializes the filtered stderr.
+
+        Args:
+            original (io.TextIOBase): The original stderr stream.
+        """
+        self.original = original
+        self._suppress_next_newline = False
+
+    def write(self, message):
+        """
+        Writes a message to stderr unless it matches a suppressed phrase.
+
+        Args:
+            message (str): The message to write.
+        """
+        if self._suppress_next_newline and message == "\n":
+            self._suppress_next_newline = False
+            return
+
+        if any(phrase in message for phrase in self.suppress_phrases):
+            self._suppress_next_newline = True
+            return
+
+        return self.original.write(message)
+
+    def flush(self):
+        """
+        Flushes the underlying stderr stream.
+        """
+        return self.original.flush()
 
 sys.stderr = FilteredStderr(sys.stderr)
 
+_OUTPUT_SUPPRESSIONS_ENABLED = False
 
-def debug(msg, *args, **kwargs):
-    logging.getLogger().debug(msg, *args, **kwargs)
+def enable_output_suppressions(enabled=True):
+    """
+    Enables or disables output suppression globally.
 
+    Args:
+        enabled (bool): Whether suppression should be active.
+    """
+    global _OUTPUT_SUPPRESSIONS_ENABLED
+    _OUTPUT_SUPPRESSIONS_ENABLED = enabled
 
-def info(msg, *args, **kwargs):
-    logging.getLogger().info(msg, *args, **kwargs)
+def suppress_stdout(phrase):
+    """
+    Suppresses specific messages in stdout.
 
+    Args:
+        phrase (str): A substring to suppress.
+    """
+    if _OUTPUT_SUPPRESSIONS_ENABLED:
+        FilteredStdout.suppress_phrases.add(phrase)
 
-def warning(msg, *args, **kwargs):
-    logging.getLogger().warning(msg, *args, **kwargs)
+def suppress_stderr(phrase):
+    """
+    Suppresses specific messages in stderr.
 
+    Args:
+        phrase (str): A substring to suppress.
+    """
+    if _OUTPUT_SUPPRESSIONS_ENABLED:
+        FilteredStderr.suppress_phrases.add(phrase)
 
-def error(msg, *args, **kwargs):
-    logging.getLogger().error(msg, *args, **kwargs)
+def suppress_warning(message=None, category=UserWarning):
+    """
+    Suppresses warnings optionally filtered by message and category.
 
+    Args:
+        message (str, optional): Regex pattern for the warning message.
+        category (Warning): The warning category to suppress.
+    """
+    if _OUTPUT_SUPPRESSIONS_ENABLED:
+        if message in (None, "", "*"):
+            warnings.filterwarnings("ignore", category=category)
+        else:
+            warnings.filterwarnings("ignore", message=message, category=category)
 
-def setup_logging():
-    # Suppress noisy or known irrelevant warnings
-    warnings.filterwarnings("ignore", category=FutureWarning)
-    warnings.filterwarnings("ignore", message="Using SYMLINK strategy on Windows*", category=UserWarning)
-    warnings.filterwarnings("ignore", message="Requested Pretrainer collection using symlinks*", category=UserWarning)
-    warnings.filterwarnings("ignore", message=".*TensorFloat-32.*", category=UserWarning)
-    warnings.filterwarnings("ignore", message=".*speechbrain\\.pretrained.*deprecated.*")
-    warnings.filterwarnings("ignore", message=".*std\\(\\): degrees of freedom.*")
+def suppress_logging(logger_name):
+    """
+    Suppresses a named logger by setting its level to WARNING.
 
-    # Root logger
+    Args:
+        logger_name (str): The name of the logger to suppress.
+    """
+    if _OUTPUT_SUPPRESSIONS_ENABLED:
+        logging.getLogger(logger_name).setLevel(logging.WARNING)
+
+class ShortNameFormatter(logging.Formatter):
+    """
+    Custom formatter that adds a relative short path to each log record.
+    """
+    def format(self, record):
+        """
+        Adds 'shortname' to the record with a path relative to sys.path.
+
+        Args:
+            record (LogRecord): The log record.
+
+        Returns:
+            str: The formatted log message.
+        """
+        full_path = os.path.abspath(record.pathname)
+        for path in map(os.path.abspath, sys.path):
+            if full_path.startswith(path):
+                rel_path = os.path.relpath(full_path, path)
+                record.shortname = rel_path.replace(os.sep, "/")
+                break
+        else:
+            record.shortname = os.path.basename(record.pathname)
+        return super().format(record)
+
+def setup_logging(logger_name):
+    """
+    Configures the root logger with stream handlers, formatting, and optional suppression.
+    
+    Args:
+        logger_name (str): The name of the logger to return. If None, the root logger is configured.
+
+    Returns:
+        logging.Logger: The configured logger.
+    """
     logger = logging.getLogger()
-    logger.setLevel(logging.DEBUG)  # Needed so your app logs work at all levels
+    logger.setLevel(logging.DEBUG)
 
-    # Suppress DEBUG from third-party libraries (set them to WARNING or higher)
-    for noisy_logger in sorted([
-        "faster_whisper",
-        "fsspec.local",
-        "matplotlib",
-        "numba",
-        "pydub.converter",
-        "pyannote",
-        "pytorch_lightning",
-        "pytorch_lightning.utilities.migration.utils",
-        "speechbrain",
-        "torch",
-        "torio",
-        "urllib3"
-    ]):
-        logging.getLogger(noisy_logger).setLevel(logging.WARNING)
-
-    # Replicate Log4j logging pattern: %d{ISO8601} [%-5p] %t #%x - %c{1} - %m%n
-    formatter = logging.Formatter(
-        fmt="%(asctime)s [%(levelname)-5s] %(threadName)s - %(name)s - %(message)s",
-        datefmt="%Y-%m-%dT%H:%M:%S"  # ISO8601-style timestamp
+    formatter = ShortNameFormatter(
+        fmt="%(asctime)s [%(levelname)-5s] %(threadName)s - %(name)s - %(message)s (%(shortname)s:%(lineno)d)",
+        datefmt="%Y-%m-%dT%H:%M:%S"
     )
 
-    # Handler for stdout (DEBUG and INFO)
     stdout_handler = logging.StreamHandler(sys.stdout)
     stdout_handler.setLevel(logging.DEBUG)
     stdout_handler.addFilter(lambda record: record.levelno < logging.WARNING)
     stdout_handler.setFormatter(formatter)
 
-    # Handler for stderr (WARNING and above)
     stderr_handler = logging.StreamHandler(sys.stderr)
     stderr_handler.setLevel(logging.WARNING)
     stderr_handler.setFormatter(formatter)
@@ -138,16 +199,8 @@ def setup_logging():
     logger.handlers.clear()
     logger.addHandler(stdout_handler)
     logger.addHandler(stderr_handler)
+    
+    if logger_name:
+        logger = logging.getLogger(logger_name)
 
-
-def suppress_output(where, what):
-    target = SuppressionTarget(where)
-    if target == SuppressionTarget.STDOUT:
-        FilteredStdout.suppress_phrases.add(what)
-    elif target == SuppressionTarget.STDERR:
-        FilteredStderr.suppress_phrases.add(what)
-    elif target == SuppressionTarget.WARNING:
-        warnings.filterwarnings("ignore", message=what)
-    elif target == SuppressionTarget.LOGGING:
-        logging.getLogger(what).setLevel(logging.WARNING)
-
+    return logger

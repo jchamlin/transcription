@@ -1,13 +1,12 @@
 [00:05.940 - 00:07.500] SPEAKER_01 (85.06% match): I thought that was fast, you didn't get ready.
-[00:07.800 - 00:08.460] SPEAKER_01 (47.58% match): What do you mean?
+[00:07.800 - 00:08.440] SPEAKER_01 (49.06% match): What do you mean?
 [01:07.000 - 01:12.040] SPEAKER_00 (16.81% match): Wait, let me put this in.
 [01:12.540 - 01:13.100] SPEAKER_00 (36.61% match): Oh.
 [01:19.880 - 01:22.120] SPEAKER_00 (20.36% match): I got it.
 [01:35.080 - 01:36.140] SPEAKER_UNKNOWN (0.0% match): You're not locked.
 [01:36.600 - 01:38.840] SPEAKER_01 (36.16% match): I don't care, why are you slamming the door in my face?
 [01:39.360 - 01:40.100] SPEAKER_04 (100.0% match): I was in a slam.
-[01:40.120 - 01:42.160] SPEAKER_01 (100.0% match): Why are you behaving like a spoiled brat?
-[01:43.280 - 01:44.360] SPEAKER_01 (100.0% match): That didn't get her way.
+[01:40.120 - 01:44.420] SPEAKER_01 (100.0% match): Why are you behaving like a spoiled brat that didn't get her way?
 [01:45.180 - 01:47.440] SPEAKER_01 (100.0% match): Running off and slamming doors.
 [01:47.740 - 01:48.560] SPEAKER_01 (100.0% match): I helped you with the restroom, that's good.
 [01:49.080 - 01:50.420] SPEAKER_01 (100.0% match): That's why you slammed the door in my face?
@@ -19,8 +18,9 @@
 [02:07.240 - 02:09.140] SPEAKER_01 (85.16% match): Because you don't, I know.
 [02:09.840 - 02:11.960] SPEAKER_00 (90.75% match): And you don't want to fake it anymore, I get it.
 [02:11.980 - 02:13.620] SPEAKER_00 (100.0% match): You don't want to have sex with me.
-[02:13.620 - 02:16.620] SPEAKER_00 (100.0% match): You never said I didn't want to have sex with you.
-[02:32.640 - 02:38.320] SPEAKER_02 (97.89% match): The right way to have sex and what needs to be in place, but I answered all the questions already, so.
+[02:13.620 - 02:19.780] SPEAKER_00 (100.0% match): You never said I didn't want to have sex with you.
+[02:23.880 - 02:29.620] SPEAKER_00 (88.68% match): Oh, not.
+[02:32.320 - 02:38.240] SPEAKER_02 (97.77% match): The right way to have sex and what needs to be in place, but I answered all the questions already, so.
 [02:38.480 - 02:40.560] SPEAKER_01 (100.0% match): That's a real question, you didn't answer that one.
 [02:40.560 - 02:43.780] SPEAKER_02 (99.91% match): Everything you said is right, everything should be in place, you're right.
 [02:43.960 - 02:44.860] SPEAKER_02 (100.0% match): Therefore, we should not.
@@ -31,201 +31,197 @@
 [02:54.800 - 02:56.220] SPEAKER_01 (100.0% match): Well, it was a little worrisome when I'm horny.
 [02:56.580 - 02:57.340] SPEAKER_01 (100.0% match): That's what you wanted to say.
 [02:58.080 - 02:58.880] SPEAKER_01 (100.0% match): Not anything about me.
-[02:58.920 - 02:59.880] SPEAKER_02 (100.0% match): That's not the right way to reconnect.
-[03:00.260 - 03:01.660] SPEAKER_02 (100.0% match): That's not the right way to connect.
+[02:58.920 - 03:01.660] SPEAKER_02 (100.0% match): That's not the right way to reconnect, that's not the right way to connect.
 [03:01.880 - 03:02.480] SPEAKER_02 (100.0% match): You don't listen.
-[03:02.480 - 03:05.320] SPEAKER_02 (100.0% match): Don't you think connecting, you have to have those things first.
-[03:05.740 - 03:07.600] SPEAKER_02 (100.0% match): So you connected with Jace.
-[03:07.600 - 03:09.960] SPEAKER_02 (100.0% match): Nothing to do with me, I should abort it.
-[03:10.000 - 03:10.620] SPEAKER_02 (100.0% match): That's what you said.
-[03:10.980 - 03:16.140] SPEAKER_01 (100.0% match): No, I said if we decide to part ways and divorce, you said you'd abort it.
-[03:16.180 - 03:17.020] SPEAKER_01 (89.05% match): Full reaction.
-[03:20.840 - 03:22.600] SPEAKER_02 (75.97% match): I don't treat you like a back up.
-[03:25.160 - 03:26.600] SPEAKER_01 (100.0% match): And we have to get you right.
-[03:27.280 - 03:29.100] SPEAKER_02 (100.0% match): And to confide in so that we're with you.
+[03:02.480 - 03:05.320] SPEAKER_02 (100.0% match): Don't you think connecting, you have to have those things first?
+[03:05.760 - 03:07.600] SPEAKER_02 (100.0% match): So you connected with Jace.
+[03:07.940 - 03:09.940] SPEAKER_02 (100.0% match): Nothing to do with me, I should have bored it.
+[03:09.940 - 03:10.600] SPEAKER_02 (100.0% match): That's what you said.
+[03:10.860 - 03:16.120] SPEAKER_01 (100.0% match): No, I said if we decided to part ways and divorce, you said you'd have bored it.
+[03:16.120 - 03:16.940] SPEAKER_01 (98.54% match): Triple reaction.
+[03:20.480 - 03:23.360] SPEAKER_02 (47.47% match): I don't treat you like a back up.
+[03:25.000 - 03:26.560] SPEAKER_01 (100.0% match): And we have to get you right.
+[03:27.300 - 03:29.100] SPEAKER_02 (100.0% match): And to confide in so that we're looking good.
 [03:29.120 - 03:29.900] SPEAKER_02 (100.0% match): I didn't do that.
-[03:29.980 - 03:32.240] SPEAKER_01 (100.0% match): I'm just letting you know, that's very narcissistic behavior.
-[03:32.860 - 03:33.880] SPEAKER_02 (77.65% match): I didn't do that.
-[03:34.560 - 03:38.900] SPEAKER_01 (98.0% match): What if it's somebody that you'll have never met and you never will meet?
-[03:39.140 - 03:40.160] SPEAKER_02 (100.0% match): I'm just saying.
-[03:40.520 - 03:41.240] SPEAKER_02 (100.0% match): I'm just saying.
-[03:41.480 - 03:43.580] SPEAKER_01 (96.52% match): What if it's someone that you have never met and will meet?
-[03:46.440 - 03:46.960] SPEAKER_01 (100.0% match): Even at the wedding?
-[03:46.980 - 03:48.180] SPEAKER_03 (97.25% match): I don't need you to stop.
-[03:49.680 - 03:49.980] SPEAKER_04 (59.67% match): Okay?
-[03:51.120 - 03:51.360] SPEAKER_01 (100.0% match): Why?
-[03:51.480 - 03:58.120] SPEAKER_04 (98.86% match): Me being honest, like this whole thing, you need to stop.
+[03:29.940 - 03:32.220] SPEAKER_01 (100.0% match): I'm just letting you know that's very narcissistic behavior.
+[03:32.860 - 03:33.940] SPEAKER_02 (73.33% match): I didn't do that.
+[03:34.940 - 03:38.880] SPEAKER_01 (100.0% match): What if it's somebody that you'll have never met and you never will meet?
+[03:38.880 - 03:39.920] SPEAKER_02 (93.27% match): I'm just saying.
+[03:40.480 - 03:41.240] SPEAKER_02 (100.0% match): I'm just saying.
+[03:41.440 - 03:43.660] SPEAKER_01 (93.11% match): What if it's someone that you have never met and will meet?
+[03:46.180 - 03:46.980] SPEAKER_01 (77.75% match): Even at the wedding?
+[03:46.980 - 03:48.220] SPEAKER_03 (94.11% match): I'm going to need you to stop.
+[03:49.640 - 03:50.020] SPEAKER_04 (57.63% match): Okay?
+[03:51.200 - 03:58.140] SPEAKER_04 (94.87% match): Me being honest, like this whole thing, you need to stop.
 [03:59.520 - 04:00.740] SPEAKER_04 (98.52% match): I'm being honest.
-[04:01.400 - 04:02.520] SPEAKER_04 (100.0% match): You said this was safe space.
-[04:02.520 - 04:04.240] SPEAKER_04 (100.0% match): Let me talk and be honest.
-[04:05.060 - 04:07.380] SPEAKER_04 (100.0% match): You said that you're going to share with this friend.
-[04:07.640 - 04:11.700] SPEAKER_04 (94.7% match): And I said I'm probably going to be embarrassed and probably walk away.
-[04:13.460 - 04:15.140] SPEAKER_04 (86.96% match): That's me being upfront and honest.
-[04:15.600 - 04:16.880] SPEAKER_01 (100.0% match): This is not being upfront and honest.
-[04:16.960 - 04:17.860] SPEAKER_01 (100.0% match): Yes it is.
-[04:18.000 - 04:18.880] SPEAKER_01 (100.0% match): This is you being mean.
-[04:19.100 - 04:20.120] SPEAKER_04 (100.0% match): I'm not being mean.
-[04:20.420 - 04:21.360] SPEAKER_01 (63.83% match): Yes you are.
-[04:22.080 - 04:28.020] SPEAKER_04 (99.48% match): You telling me that I'm being, you telling me that I have a playbook is fucked up.
-[04:29.500 - 04:32.780] SPEAKER_04 (90.55% match): The shit that you're reading is fucked up.
-[04:32.820 - 04:34.000] SPEAKER_01 (88.98% match): You're doing everything from it.
-[04:34.000 - 04:34.860] SPEAKER_01 (100.0% match): This is real life.
-[04:34.900 - 04:35.840] SPEAKER_01 (100.0% match): I don't care if you've read it.
-[04:35.840 - 04:37.120] SPEAKER_04 (100.0% match): This is real life.
-[04:37.380 - 04:38.420] SPEAKER_04 (100.0% match): This is real life.
-[04:38.500 - 04:39.580] SPEAKER_04 (100.0% match): You're doing everything from it.
-[04:39.580 - 04:40.040] SPEAKER_04 (100.0% match): This is real life.
-[04:40.080 - 04:41.260] SPEAKER_04 (100.0% match): This is real life.
-[04:41.460 - 04:42.480] SPEAKER_04 (100.0% match): This is real life.
-[04:42.480 - 04:43.540] SPEAKER_04 (100.0% match): This is not no game.
-[04:44.040 - 04:47.660] SPEAKER_04 (100.0% match): Those stories you're reading, this is actually a marriage.
-[04:48.220 - 04:49.220] SPEAKER_01 (100.0% match): Wake up.
-[04:49.220 - 04:49.920] SPEAKER_01 (100.0% match): You're in the playbook.
-[04:49.920 - 04:50.800] SPEAKER_04 (100.0% match): Wake up.
+[04:01.400 - 04:02.540] SPEAKER_04 (100.0% match): You said this was a safe space.
+[04:02.980 - 04:04.200] SPEAKER_04 (100.0% match): Let me talk and be honest.
+[04:04.880 - 04:07.380] SPEAKER_04 (100.0% match): You said that you're going to share with this friend.
+[04:07.380 - 04:12.160] SPEAKER_04 (85.88% match): And I said I'm probably going to be embarrassed and probably walk away.
+[04:13.440 - 04:15.080] SPEAKER_04 (85.43% match): That's me being upfront and honest.
+[04:15.580 - 04:16.880] SPEAKER_01 (100.0% match): This is not being upfront and honest.
+[04:16.960 - 04:17.860] SPEAKER_01 (100.0% match): Yes, it is.
+[04:17.980 - 04:18.880] SPEAKER_01 (100.0% match): This is you being mean.
+[04:19.100 - 04:20.160] SPEAKER_04 (100.0% match): I'm not being mean.
+[04:20.460 - 04:21.360] SPEAKER_01 (62.22% match): Yes, you are.
+[04:22.420 - 04:27.960] SPEAKER_04 (100.0% match): You telling me that I'm being, you telling me that I have a playbook is fucked up.
+[04:29.740 - 04:32.740] SPEAKER_04 (97.43% match): The shit that you're reading is fucked up.
+[04:33.100 - 04:34.880] SPEAKER_01 (100.0% match): This is real life.
+[04:34.880 - 04:36.100] SPEAKER_01 (100.0% match): I don't care if you've read it.
+[04:36.100 - 04:37.200] SPEAKER_04 (100.0% match): This is real life.
+[04:37.200 - 04:38.440] SPEAKER_04 (100.0% match): This is real life.
+[04:38.440 - 04:39.660] SPEAKER_04 (100.0% match): You're doing everything from it.
+[04:40.040 - 04:41.060] SPEAKER_04 (100.0% match): This is real life.
+[04:41.260 - 04:42.460] SPEAKER_04 (100.0% match): This is real life.
+[04:42.460 - 04:42.480] SPEAKER_04 (100.0% match): This is real life.
+[04:42.520 - 04:43.540] SPEAKER_04 (100.0% match): This is not no game.
+[04:44.040 - 04:47.640] SPEAKER_04 (100.0% match): Those stories you're reading, this is actually a marriage.
+[04:48.240 - 04:49.180] SPEAKER_04 (100.0% match): Wake up.
+[04:49.180 - 04:49.920] SPEAKER_04 (100.0% match): You're in the playbook.
+[04:49.920 - 04:50.780] SPEAKER_04 (100.0% match): Wake up.
 [04:51.080 - 04:51.800] SPEAKER_04 (100.0% match): Wake up.
-[04:52.100 - 04:53.120] SPEAKER_04 (100.0% match): I'm tired.
-[04:54.160 - 04:55.740] SPEAKER_04 (98.8% match): You have a name for everything.
-[04:55.740 - 04:58.120] SPEAKER_04 (100.0% match): I'm sick and tired.
-[05:00.100 - 05:02.980] SPEAKER_04 (100.0% match): I'm not going to sit here and have you have a name for everything.
-[05:03.740 - 05:06.560] SPEAKER_04 (90.6% match): Gaslighting, manipulation, this and that.
-[05:08.600 - 05:09.600] SPEAKER_01 (100.0% match): You knew those terms before.
-[05:09.600 - 05:11.240] SPEAKER_04 (77.32% match): I don't give a fuck.
-[05:12.180 - 05:13.220] SPEAKER_04 (55.58% match): Wake up.
-[05:14.180 - 05:14.700] SPEAKER_01 (100.0% match): Okay.
-[05:14.960 - 05:15.920] SPEAKER_01 (100.0% match): Wake up.
-[05:15.960 - 05:16.700] SPEAKER_01 (100.0% match): I am wide awake.
-[05:17.540 - 05:18.460] SPEAKER_04 (67.17% match): Wake up.
-[05:21.020 - 05:23.020] SPEAKER_04 (86.15% match): I said I wasn't threatening you.
-[05:23.240 - 05:24.800] SPEAKER_04 (100.0% match): You said this was a safe space.
-[05:24.800 - 05:26.240] SPEAKER_04 (100.0% match): That I can talk about this.
-[05:26.240 - 05:28.360] SPEAKER_04 (100.0% match): And then you asked me, why don't you trust me?
-[05:28.560 - 05:30.180] SPEAKER_04 (100.0% match): Why don't you show me that you love me?
-[05:30.340 - 05:31.400] SPEAKER_04 (100.0% match): Why don't you do this?
-[05:31.620 - 05:32.720] SPEAKER_04 (100.0% match): Why don't you do that?
-[05:32.900 - 05:36.180] SPEAKER_04 (100.0% match): And then you have all these words and these terms and these...
-[05:36.180 - 05:37.440] SPEAKER_04 (100.0% match): Oh my God.
-[05:37.700 - 05:40.020] SPEAKER_04 (100.0% match): Can we be humans with feelings for once?
-[05:40.540 - 05:41.800] SPEAKER_01 (50.87% match): You can't.
-[05:43.160 - 05:44.840] SPEAKER_04 (100.0% match): Because you pushed me away.
-[05:46.040 - 05:48.960] SPEAKER_04 (96.1% match): And then I ask you, hey, are you still...
-[05:48.960 - 05:53.960] SPEAKER_04 (100.0% match): And then you do these slight little terms of hooker, tramp, and this and that.
-[05:53.960 - 05:56.240] SPEAKER_04 (100.0% match): And no, I can't have sex without feelings.
-[05:56.800 - 05:58.560] SPEAKER_04 (100.0% match): And of course, I walk into the...
-[05:58.560 - 06:00.280] SPEAKER_04 (100.0% match): You follow me into the...
-[06:00.280 - 06:01.160] SPEAKER_04 (100.0% match): Dude.
-[06:03.380 - 06:05.300] SPEAKER_04 (100.0% match): It's nice you're moving on to the next step.
-[06:05.660 - 06:06.220] SPEAKER_04 (100.0% match): Threat.
-[06:07.900 - 06:09.620] SPEAKER_04 (91.8% match): You're fucked up.
-[06:10.080 - 06:10.940] SPEAKER_04 (100.0% match): Sleep with that.
-[06:12.040 - 06:13.200] SPEAKER_04 (100.0% match): Fall asleep to that.
-[06:14.020 - 06:15.340] SPEAKER_04 (100.0% match): That's fucked up.
-[06:15.600 - 06:18.140] SPEAKER_01 (100.0% match): I don't sleep anyway, so why would I fall asleep?
-[06:18.400 - 06:18.960] SPEAKER_04 (100.0% match): Yeah.
-[06:19.620 - 06:20.920] SPEAKER_04 (100.0% match): Because that's fucked up.
-[06:20.920 - 06:22.400] SPEAKER_04 (100.0% match): Because why would you say that?
-[06:22.880 - 06:23.380] SPEAKER_04 (100.0% match): Now you're...
-[06:23.380 - 06:24.300] SPEAKER_04 (100.0% match): Make it make sense.
-[06:24.440 - 06:25.280] SPEAKER_01 (100.0% match): Because now you're being threatening.
-[06:25.860 - 06:26.920] SPEAKER_04 (100.0% match): I'm not threatening you.
+[04:52.080 - 04:53.120] SPEAKER_04 (100.0% match): I'm tired.
+[04:54.120 - 04:55.740] SPEAKER_04 (96.36% match): You have a name for everything.
+[04:56.340 - 04:58.000] SPEAKER_04 (100.0% match): I'm sick and tired.
+[04:59.840 - 05:02.920] SPEAKER_04 (95.32% match): I'm not going to sit here and have you have a name for everything.
+[05:03.860 - 05:04.300] SPEAKER_04 (100.0% match): Gaslighting.
+[05:04.700 - 05:05.140] SPEAKER_04 (100.0% match): Manipulation.
+[05:05.340 - 05:07.140] SPEAKER_04 (53.06% match): This and that.
+[05:08.620 - 05:09.620] SPEAKER_01 (100.0% match): You knew those terms before.
+[05:09.620 - 05:11.180] SPEAKER_04 (80.0% match): I don't give a fuck.
+[05:12.080 - 05:12.960] SPEAKER_04 (77.05% match): Wake up.
+[05:14.200 - 05:14.640] SPEAKER_01 (100.0% match): Okay.
+[05:14.980 - 05:15.900] SPEAKER_01 (100.0% match): Wake up.
+[05:15.900 - 05:16.720] SPEAKER_01 (100.0% match): I am wide awake.
+[05:17.540 - 05:18.420] SPEAKER_04 (70.23% match): Wake up.
+[05:21.320 - 05:22.980] SPEAKER_04 (100.0% match): I said I wasn't threatening you.
+[05:23.260 - 05:24.820] SPEAKER_04 (100.0% match): You said this was a safe space.
+[05:25.020 - 05:26.200] SPEAKER_04 (100.0% match): That I can talk about this.
+[05:26.320 - 05:28.380] SPEAKER_04 (100.0% match): And then you asked me, why don't you trust me?
+[05:28.540 - 05:30.200] SPEAKER_04 (100.0% match): Why don't you show me that you love me?
+[05:30.320 - 05:31.420] SPEAKER_04 (100.0% match): Why don't you do this?
+[05:31.600 - 05:32.740] SPEAKER_04 (100.0% match): Why don't you do that?
+[05:32.740 - 05:36.160] SPEAKER_04 (100.0% match): And then you have all these words and these terms and these...
+[05:36.160 - 05:37.460] SPEAKER_04 (100.0% match): Oh my God.
+[05:37.680 - 05:40.040] SPEAKER_04 (100.0% match): Can we be humans with feelings for once?
+[05:40.520 - 05:42.280] SPEAKER_01 (36.42% match): You can't.
+[05:43.120 - 05:44.900] SPEAKER_04 (100.0% match): Because you pushed me away.
+[05:46.020 - 05:48.980] SPEAKER_04 (95.47% match): And then I ask you, hey, are you still...
+[05:48.980 - 05:53.960] SPEAKER_04 (100.0% match): And then you do these slight little terms of hooker, tramp, and this and that.
+[05:54.060 - 05:56.240] SPEAKER_04 (100.0% match): And no, I can't have sex with you without feelings.
+[05:56.580 - 05:58.560] SPEAKER_04 (100.0% match): And of course I walk into the...
+[05:58.560 - 06:00.180] SPEAKER_04 (100.0% match): You follow me into the...
+[06:01.040 - 06:01.600] SPEAKER_04 (90.0% match): Dude.
+[06:03.020 - 06:06.180] SPEAKER_04 (90.63% match): It's nice you're moving on to the next step, threat.
+[06:07.680 - 06:07.980] SPEAKER_01 (84.67% match): Yeah.
+[06:08.140 - 06:09.440] SPEAKER_04 (100.0% match): You're fucked up.
+[06:10.080 - 06:11.040] SPEAKER_04 (100.0% match): Sleep with that.
+[06:12.040 - 06:13.180] SPEAKER_04 (100.0% match): Fall asleep to that.
+[06:14.020 - 06:15.360] SPEAKER_04 (100.0% match): That's fucked up.
+[06:15.600 - 06:18.120] SPEAKER_01 (100.0% match): I don't sleep anyway, so why would I fall asleep?
+[06:18.400 - 06:18.660] SPEAKER_04 (100.0% match): Yeah.
+[06:18.660 - 06:19.140] SPEAKER_04 (100.0% match): Yeah.
+[06:19.640 - 06:20.920] SPEAKER_04 (100.0% match): Because that's fucked up.
+[06:20.920 - 06:22.420] SPEAKER_04 (100.0% match): Because why would you say that?
+[06:23.000 - 06:24.240] SPEAKER_04 (100.0% match): Make it make sense.
+[06:24.400 - 06:25.260] SPEAKER_01 (100.0% match): Because now you're being threatening.
+[06:25.740 - 06:26.940] SPEAKER_04 (91.33% match): I'm not threatening you.
 [06:26.960 - 06:27.780] SPEAKER_01 (100.0% match): You're in my face.
-[06:27.920 - 06:28.260] SPEAKER_01 (100.0% match): You're yelling at me.
+[06:27.780 - 06:28.260] SPEAKER_01 (100.0% match): You're yelling at me.
 [06:28.260 - 06:29.880] SPEAKER_01 (100.0% match): I'm being completely honest.
-[06:30.180 - 06:30.340] SPEAKER_04 (100.0% match): No, you're threatening.
-[06:30.340 - 06:31.740] SPEAKER_04 (100.0% match): I'm not threatening you.
-[06:32.080 - 06:33.420] SPEAKER_04 (100.0% match): If you want to go tell people...
-[06:33.420 - 06:34.100] SPEAKER_04 (100.0% match): If I was...
-[06:34.100 - 06:34.920] SPEAKER_04 (100.0% match): I'm saying that I'm probably...
-[06:34.920 - 06:35.780] SPEAKER_04 (100.0% match): You even said it.
-[06:35.800 - 06:39.700] SPEAKER_04 (100.0% match): You're like, people are just going to look at you like you're bad and that they're probably
-[06:39.700 - 06:41.740] SPEAKER_04 (100.0% match): not going to like you anymore, and this and that.
-[06:42.000 - 06:43.280] SPEAKER_04 (100.0% match): And I'm like, yeah, you're probably right.
-[06:43.300 - 06:48.120] SPEAKER_04 (100.0% match): So I'm saying, with embarrassment, I'm probably going to probably flee towards divorce.
-[06:49.540 - 06:50.240] SPEAKER_04 (100.0% match): That's human.
-[06:50.340 - 06:51.080] SPEAKER_04 (100.0% match): That's normal.
-[06:51.080 - 06:52.940] SPEAKER_01 (47.2% match): No, it's not.
-[06:52.940 - 06:54.720] SPEAKER_04 (90.22% match): And I'm sharing my feelings with you.
+[06:30.080 - 06:30.560] SPEAKER_04 (100.0% match): No, you're threatening.
+[06:30.560 - 06:31.740] SPEAKER_04 (100.0% match): I'm not threatening you.
+[06:32.120 - 06:34.900] SPEAKER_04 (100.0% match): If you want to go tell people, I'm saying that I'm probably...
+[06:34.900 - 06:35.800] SPEAKER_04 (100.0% match): You even said it.
+[06:35.840 - 06:39.700] SPEAKER_04 (100.0% match): You're like, people are just going to look at you like you're bad, and that they're probably
+[06:39.700 - 06:41.760] SPEAKER_04 (100.0% match): not going to like you anymore, and this and that.
+[06:42.020 - 06:43.280] SPEAKER_04 (100.0% match): And I'm like, yeah, you're probably right.
+[06:43.320 - 06:48.120] SPEAKER_04 (100.0% match): So I'm saying, with embarrassment, I'm probably going to probably flee towards divorce.
+[06:49.560 - 06:50.220] SPEAKER_04 (100.0% match): That's human.
+[06:50.360 - 06:51.100] SPEAKER_04 (100.0% match): That's normal.
+[06:51.560 - 06:52.320] SPEAKER_01 (100.0% match): That's fine.
+[06:53.080 - 06:54.720] SPEAKER_04 (97.93% match): And I'm sharing my feelings with you.
 [06:54.740 - 06:55.140] SPEAKER_04 (100.0% match): Facing what you did.
-[06:55.140 - 06:56.840] SPEAKER_04 (100.0% match): And you're saying that I'm threatening you?
-[06:57.560 - 06:59.100] SPEAKER_04 (100.0% match): I'm not the one looking at attorneys.
-[06:59.100 - 06:59.820] SPEAKER_04 (100.0% match): You are.
-[06:59.980 - 07:00.980] SPEAKER_01 (100.0% match): You're yelling at me.
-[07:01.060 - 07:02.380] SPEAKER_01 (100.0% match): You're looming over me.
-[07:02.940 - 07:04.640] SPEAKER_04 (93.35% match): I'm not the one looking at attorneys.
-[07:04.640 - 07:05.320] SPEAKER_04 (100.0% match): You are.
-[07:05.460 - 07:06.500] SPEAKER_04 (100.0% match): That's you, right?
-[07:06.520 - 07:07.660] SPEAKER_02 (100.0% match): I'm not looking at attorneys.
-[07:07.720 - 07:11.980] SPEAKER_04 (96.24% match): Because I have been so content.
-[07:12.220 - 07:13.920] SPEAKER_04 (100.0% match): I have kept my fucking cool.
-[07:14.300 - 07:16.380] SPEAKER_04 (100.0% match): And for you to say that I'm threatening you?
-[07:16.380 - 07:23.740] SPEAKER_04 (100.0% match): I haven't even done a single thing to even say, oh yeah, I'm about to divorce you.
-[07:23.960 - 07:25.300] SPEAKER_04 (100.0% match): I'm trying not to be in my ass.
-[07:25.340 - 07:30.360] SPEAKER_04 (100.0% match): I'm trying to look for at least some apartment so that I'm not out on my ass.
-[07:30.640 - 07:32.660] SPEAKER_04 (100.0% match): And you're talking about me threatening you?
-[07:33.020 - 07:35.120] SPEAKER_04 (100.0% match): When you're telling me that you're going to...
-[07:35.120 - 07:38.220] SPEAKER_04 (100.0% match): I should probably tell someone since you told your friends.
+[06:55.140 - 06:56.900] SPEAKER_04 (100.0% match): And you're saying that I'm threatening you?
+[06:56.900 - 06:59.120] SPEAKER_04 (100.0% match): I'm not the one looking at attorneys.
+[06:59.120 - 06:59.920] SPEAKER_04 (100.0% match): You are.
+[07:00.240 - 07:01.020] SPEAKER_01 (100.0% match): You're yelling at me.
+[07:01.020 - 07:02.540] SPEAKER_01 (98.22% match): You're looming over me.
+[07:02.860 - 07:04.640] SPEAKER_04 (89.16% match): I'm not the one looking at attorneys.
+[07:04.680 - 07:05.340] SPEAKER_04 (100.0% match): You are.
+[07:05.420 - 07:06.540] SPEAKER_04 (100.0% match): That's you, right?
+[07:06.540 - 07:07.660] SPEAKER_02 (100.0% match): I'm not looking at attorneys.
+[07:07.700 - 07:12.000] SPEAKER_04 (95.81% match): Because I have been so content.
+[07:12.200 - 07:13.940] SPEAKER_04 (100.0% match): I have kept my fucking cool.
+[07:14.280 - 07:21.880] SPEAKER_04 (100.0% match): And for you to say that I'm threatening you, I haven't even done a single thing to even
+[07:21.880 - 07:23.680] SPEAKER_04 (100.0% match): say, oh yeah, I'm about to divorce you.
+[07:23.880 - 07:25.280] SPEAKER_04 (100.0% match): I'm trying not to be in my ass.
+[07:25.280 - 07:30.400] SPEAKER_04 (100.0% match): I'm trying to look for at least some apartment so that I'm not on my ass.
+[07:30.660 - 07:35.140] SPEAKER_04 (100.0% match): And you're talking about me threatening you when you're telling me that you're going to
+[07:35.140 - 07:38.220] SPEAKER_04 (100.0% match): I should probably tell someone since you told your friends.
 [07:38.400 - 07:39.400] SPEAKER_04 (100.0% match): I should probably tell someone.
-[07:39.940 - 07:41.680] SPEAKER_04 (100.0% match): You're the one threatening me.
-[07:42.000 - 07:45.380] SPEAKER_04 (100.0% match): You're the one threatening me to tell your friends that I cheated on you.
-[07:45.380 - 07:45.940] SPEAKER_04 (100.0% match): Go ahead.
-[07:46.060 - 07:48.200] SPEAKER_04 (100.0% match): In fact, matter of fact, let's post about it.
-[07:48.300 - 07:50.420] SPEAKER_04 (100.0% match): Let's make a whole post on Facebook about it.
-[07:50.480 - 07:54.900] SPEAKER_04 (100.0% match): And stop sending me requests about saying the fact that we're married on Facebook.
-[07:55.200 - 07:56.040] SPEAKER_04 (100.0% match): Stop with that.
-[07:56.240 - 07:58.160] SPEAKER_04 (100.0% match): Because you're so fucking two-faced.
-[07:58.380 - 08:00.160] SPEAKER_04 (100.0% match): You do one thing and then you do the other.
-[08:00.760 - 08:03.960] SPEAKER_04 (100.0% match): Oh, nice, nice, nice that you're threatening me.
-[08:04.180 - 08:06.620] SPEAKER_04 (100.0% match): And then you go on Facebook and you want to say you're married to me.
-[08:06.780 - 08:08.700] SPEAKER_04 (100.0% match): But oh, you won't have sex with me.
-[08:08.780 - 08:12.220] SPEAKER_04 (100.0% match): But oh, you think I'm comparing you to other sex partners.
-[08:12.300 - 08:13.720] SPEAKER_04 (100.0% match): But oh, you want to talk to Kitty.
-[08:13.720 - 08:17.340] SPEAKER_04 (100.0% match): But at the same time, you feel like we're not on the same page or the same team.
-[08:17.340 - 08:18.820] SPEAKER_04 (100.0% match): Like, make up your mind.
-[08:19.260 - 08:21.360] SPEAKER_04 (100.0% match): It is so frustrating.
-[08:22.800 - 08:24.300] SPEAKER_04 (100.0% match): I'm trying to give you space.
-[08:24.540 - 08:25.460] SPEAKER_04 (100.0% match): I'm trying to...
-[08:25.460 - 08:27.620] SPEAKER_04 (100.0% match): I can't even touch you.
-[08:27.740 - 08:29.520] SPEAKER_04 (100.0% match): I can't even look at you.
-[08:29.860 - 08:34.480] SPEAKER_04 (100.0% match): Because you are so sad all the time.
-[08:35.220 - 08:36.200] SPEAKER_01 (100.0% match): Who did that to me?
-[08:36.460 - 08:37.280] SPEAKER_04 (100.0% match): I did.
-[08:37.760 - 08:38.160] SPEAKER_04 (100.0% match): Yeah.
-[08:38.560 - 08:42.480] SPEAKER_04 (100.0% match): And like, you always are so like, oh, we're not on the same team.
-[08:42.480 - 08:43.940] SPEAKER_04 (100.0% match): Oh, we're getting a divorce.
-[08:44.320 - 08:46.220] SPEAKER_04 (100.0% match): Oh, we don't have...
-[08:46.220 - 08:47.740] SPEAKER_04 (100.0% match): Oh, like, dude.
-[08:48.460 - 08:49.880] SPEAKER_01 (100.0% match): I never said we're getting a divorce.
-[08:50.360 - 08:50.900] SPEAKER_01 (100.0% match): You did.
-[08:52.840 - 08:54.280] SPEAKER_01 (100.0% match): You just keep making shit up.
-[08:54.320 - 08:54.960] SPEAKER_01 (100.0% match): You did.
-[08:55.120 - 08:55.560] SPEAKER_01 (100.0% match): No, I didn't.
-[08:55.660 - 08:56.340] SPEAKER_04 (100.0% match): You were downstairs.
-[08:56.560 - 09:01.680] SPEAKER_04 (100.0% match): You were like, why would it matter about getting a job and making money if we're already looming towards divorce?
-[09:01.680 - 09:02.460] SPEAKER_04 (100.0% match): That's what you said.
-[09:03.420 - 09:04.120] SPEAKER_04 (100.0% match): You said that.
-[09:05.380 - 09:06.120] SPEAKER_04 (100.0% match): Yeah, you said that.
-[09:06.300 - 09:07.580] SPEAKER_01 (100.0% match): I didn't say we're getting a divorce.
-[09:08.700 - 09:10.020] SPEAKER_04 (100.0% match): You said we're moving towards getting a divorce.
-[09:10.020 - 09:10.940] SPEAKER_04 (73.48% match): That's what you said.
-[09:12.400 - 09:13.780] SPEAKER_01 (100.0% match): I said we're heading in that direction, yes.
-[09:13.900 - 09:16.120] SPEAKER_04 (100.0% match): Yeah, so...
-[09:16.120 - 09:17.020] SPEAKER_04 (100.0% match): And now you're talking about threats.
-[09:17.360 - 09:22.480] SPEAKER_04 (100.0% match): When I literally said, I feel like if you were to tell people, I probably would move towards divorce.
-[09:22.700 - 09:23.960] SPEAKER_04 (100.0% match): I would be embarrassed.
-[09:23.960 - 09:24.720] SPEAKER_04 (100.0% match): That's what I said.
-[09:25.080 - 09:25.800] SPEAKER_04 (100.0% match): That's not a threat.
-[09:26.040 - 09:27.220] SPEAKER_04 (100.0% match): And you said that I'm moving to the...
-[09:27.220 - 09:31.820] SPEAKER_04 (100.0% match): And you said that I'm the one who's moving next up in the Tudors Playbook to threats?
-[09:32.120 - 09:32.620] SPEAKER_01 (52.0% match): Mm-hmm.
-[09:33.020 - 09:33.560] SPEAKER_01 (56.3% match): You are.
-[09:35.220 - 09:36.060] SPEAKER_04 (98.57% match): I've graduated.
-[09:36.700 - 09:37.280] SPEAKER_04 (100.0% match): That's good.
-[09:39.300 - 09:40.800] SPEAKER_03 (38.2% match): Stop fucking with me.
-[09:40.800 - 09:41.900] SPEAKER_01 (90.73% match): I'm not fucking with you.
-[09:41.960 - 09:42.900] SPEAKER_01 (100.0% match): You are fucking with me.
-[09:43.020 - 09:43.900] SPEAKER_01 (100.0% match): No, I'm talking to you.
-[09:44.100 - 09:45.200] SPEAKER_03 (100.0% match): You are fucking with me.
-[09:45.300 - 09:46.160] SPEAKER_01 (100.0% match): You haven't done the reading.
-[09:46.660 - 09:47.060] SPEAKER_01 (100.0% match): You don't know.
-[09:47.060 - 09:48.280] SPEAKER_03 (98.36% match): You are fucking with me.
-[09:48.520 - 09:49.760] SPEAKER_01 (97.42% match): You don't know, but you're doing it.
-[09:49.880 - 09:51.260] SPEAKER_03 (100.0% match): I don't care about reading.
+[07:40.080 - 07:41.680] SPEAKER_04 (100.0% match): You're the one threatening me.
+[07:41.960 - 07:45.380] SPEAKER_04 (100.0% match): You're the one threatening me to tell your friends that I cheated on you.
+[07:45.400 - 07:46.000] SPEAKER_04 (100.0% match): Go ahead.
+[07:46.300 - 07:48.220] SPEAKER_04 (100.0% match): In fact, matter of fact, let's post about it.
+[07:48.260 - 07:50.400] SPEAKER_04 (100.0% match): Let's make a whole post on Facebook about it.
+[07:50.440 - 07:54.880] SPEAKER_04 (100.0% match): And stop sending me requests about saying the fact that we're married on Facebook.
+[07:54.880 - 07:58.200] SPEAKER_04 (100.0% match): Stop with that because you're so fucking to face.
+[07:58.200 - 08:00.300] SPEAKER_04 (100.0% match): You do one thing and then you do the other.
+[08:00.420 - 08:01.540] SPEAKER_04 (100.0% match): Oh, nice.
+[08:02.120 - 08:02.300] SPEAKER_04 (100.0% match): Nice.
+[08:02.580 - 08:02.840] SPEAKER_04 (100.0% match): Nice.
+[08:02.860 - 08:03.980] SPEAKER_04 (100.0% match): You're threatening me.
+[08:03.980 - 08:06.720] SPEAKER_04 (100.0% match): And then you go on Facebook and you want to say you're married to me.
+[08:06.780 - 08:08.740] SPEAKER_04 (100.0% match): But oh, you don't have sex with me.
+[08:08.840 - 08:12.220] SPEAKER_04 (100.0% match): But oh, you you think I'm comparing you to other sex partners.
+[08:12.260 - 08:13.720] SPEAKER_04 (100.0% match): But oh, you want to talk to Kitty.
+[08:14.020 - 08:17.320] SPEAKER_04 (100.0% match): But at the same time, you feel like we're not on the same page or the same team.
+[08:17.480 - 08:18.820] SPEAKER_04 (100.0% match): Like make up your mind.
+[08:19.220 - 08:21.340] SPEAKER_04 (100.0% match): It is so frustrating.
+[08:22.680 - 08:24.280] SPEAKER_04 (100.0% match): I'm trying to give you space.
+[08:24.280 - 08:27.640] SPEAKER_04 (100.0% match): I'm trying to like I can't even touch you.
+[08:27.840 - 08:34.520] SPEAKER_04 (100.0% match): I can't even look at you because you are so sad all the time.
+[08:35.360 - 08:36.200] SPEAKER_01 (100.0% match): Who did that to me?
+[08:36.500 - 08:37.280] SPEAKER_04 (100.0% match): I did.
+[08:37.800 - 08:38.120] SPEAKER_04 (100.0% match): Yeah.
+[08:38.480 - 08:42.480] SPEAKER_04 (100.0% match): And like you always are so like, oh, we're not on the same team.
+[08:42.680 - 08:43.940] SPEAKER_04 (100.0% match): Oh, we're getting a divorce.
+[08:44.600 - 08:46.120] SPEAKER_04 (100.0% match): Oh, we don't have to.
+[08:46.240 - 08:48.117] SPEAKER_04 (100.0% match): Oh, like, dude,
+[08:48.421 - 08:49.920] SPEAKER_01 (100.0% match): I never said we're getting a divorce.
+[08:50.320 - 08:51.600] SPEAKER_01 (100.0% match): You did it up again.
+[08:51.660 - 08:52.220] SPEAKER_01 (100.0% match): You did.
+[08:52.800 - 08:54.340] SPEAKER_01 (100.0% match): You just keep making shit up.
+[08:54.500 - 08:54.980] SPEAKER_01 (100.0% match): You did.
+[08:55.060 - 08:55.580] SPEAKER_01 (100.0% match): No, I didn't.
+[08:55.700 - 08:56.300] SPEAKER_04 (100.0% match): You were downstairs.
+[08:56.520 - 09:01.660] SPEAKER_04 (100.0% match): You were like, why would why would it matter about getting a job and making money if we're already looming towards divorce?
+[09:01.660 - 09:02.500] SPEAKER_04 (100.0% match): That's what you said.
+[09:03.500 - 09:04.140] SPEAKER_04 (100.0% match): You said that.
+[09:05.320 - 09:06.160] SPEAKER_04 (98.81% match): Yeah, you said that.
+[09:06.320 - 09:07.580] SPEAKER_01 (100.0% match): I didn't say we're getting a divorce.
+[09:08.720 - 09:10.020] SPEAKER_04 (100.0% match): You said we're moving towards getting a divorce.
+[09:10.060 - 09:10.680] SPEAKER_04 (100.0% match): That's what you said.
+[09:12.240 - 09:13.500] SPEAKER_01 (100.0% match): I said we're heading in that direction.
+[09:13.700 - 09:13.860] SPEAKER_01 (100.0% match): Yes.
+[09:13.920 - 09:14.220] SPEAKER_04 (100.0% match): Yeah.
+[09:15.380 - 09:21.740] SPEAKER_04 (90.86% match): So I never talk about threats when I literally said I feel like if you were to tell people, I probably would.
+[09:21.740 - 09:22.460] SPEAKER_04 (100.0% match): That's not a threat.
+[09:22.820 - 09:23.960] SPEAKER_04 (100.0% match): I would be embarrassed.
+[09:24.000 - 09:24.700] SPEAKER_04 (100.0% match): That's what I said.
+[09:25.080 - 09:25.780] SPEAKER_04 (100.0% match): That's not a threat.
+[09:26.040 - 09:31.820] SPEAKER_04 (100.0% match): And you said that I'm moving to that and you said that I'm the one who's moving next up in the Tudors playbook to threats.
+[09:33.040 - 09:33.580] SPEAKER_01 (56.3% match): You are.
+[09:35.260 - 09:36.060] SPEAKER_04 (100.0% match): I've graduated.
+[09:36.740 - 09:37.280] SPEAKER_04 (100.0% match): That's good.
+[09:39.320 - 09:40.720] SPEAKER_03 (40.93% match): Stop fucking with me.
+[09:40.940 - 09:41.880] SPEAKER_01 (100.0% match): I'm not fucking with you.
+[09:41.940 - 09:42.880] SPEAKER_01 (100.0% match): You are fucking with me.
+[09:42.980 - 09:43.960] SPEAKER_01 (97.96% match): No, I'm talking to you.
+[09:44.080 - 09:45.200] SPEAKER_03 (100.0% match): You are fucking with me.
+[09:45.260 - 09:46.180] SPEAKER_01 (100.0% match): You haven't done the reading.
+[09:46.540 - 09:47.060] SPEAKER_01 (100.0% match): You don't know.
+[09:47.060 - 09:48.300] SPEAKER_03 (96.77% match): You are fucking with me.
+[09:48.420 - 09:49.780] SPEAKER_01 (96.18% match): You don't know, but you're doing it.
+[09:49.780 - 09:51.220] SPEAKER_03 (96.6% match): I don't care about reading.

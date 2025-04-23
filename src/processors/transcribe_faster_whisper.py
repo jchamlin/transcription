@@ -1,9 +1,11 @@
 import os
 import time
-from utils.logging_utils import info, error
-from utils.file_utils import write_file
-from utils.transcript_utils import load_transcript, save_transcript, format_segment
+import logging
+from utils import write_file, load_transcript, save_transcript, format_segment
 from compute_providers.ctranslate2_utils import get_available_devices as get_available_ct2_devices, get_available_compute_types as get_available_ct2_compute_types, get_device, get_compute_type, get_num_threads
+
+logger = logging.getLogger(__name__)
+
 
 def get_available_models():
     """
@@ -15,6 +17,7 @@ def get_available_models():
     from faster_whisper import available_models
     return available_models()
 
+
 def get_available_devices():
     """
     Returns available compute devices using CTranslate2 backend.
@@ -23,6 +26,7 @@ def get_available_devices():
         list[str]: List of devices in preferred order (e.g., ["cuda", "cpu"])
     """
     return get_available_ct2_devices()
+
 
 def get_available_compute_types(device):
     """
@@ -36,7 +40,9 @@ def get_available_compute_types(device):
     """
     return get_available_ct2_compute_types()
 
+
 _transcription_models = {}
+
 
 def get_transcription_model(model_size_or_path=None, device=None, compute_type=None, num_threads=None):
     """
@@ -48,7 +54,7 @@ def get_transcription_model(model_size_or_path=None, device=None, compute_type=N
     num_threads = num_threads or get_num_threads(device)
     if model_size_or_path not in _transcription_models:
         from faster_whisper import WhisperModel
-        info(f"🔄 Creating faster-whisper model '{model_size_or_path}' device '{device}' compute_type '{compute_type}' num_threads '{num_threads}'")
+        logger.info(f"🔄 Creating faster-whisper model '{model_size_or_path}' device '{device}' compute_type '{compute_type}' num_threads '{num_threads}'")
         model = WhisperModel(
             model_size_or_path,
             device=device,
@@ -65,6 +71,7 @@ def get_transcription_model(model_size_or_path=None, device=None, compute_type=N
 
     result = _transcription_models[model_size_or_path]
     return result["model"]
+
 
 def transcribe(audio_file, use_cache=True, model_size_or_path=None, device=None, compute_type=None, num_threads=None):
     """
@@ -91,14 +98,14 @@ def transcribe(audio_file, use_cache=True, model_size_or_path=None, device=None,
     transcript_file = base + suffix + ".whisper"
     cached_transcription_result = load_transcript(transcript_file)
     if use_cache and cached_transcription_result is not None:
-        info(f"🔹 Skipping transcription on {audio_file} and using cached results from {transcript_file}")
+        logger.info(f"🔹 Skipping transcription on {audio_file} and using cached results from {transcript_file}")
         transcript = cached_transcription_result
     else:
         transcript = transcribe_fast_whisper(
-            audio_file, 
-            model_size_or_path=model_size_or_path, 
-            device=device, 
-            compute_type=compute_type, 
+            audio_file,
+            model_size_or_path=model_size_or_path,
+            device=device,
+            compute_type=compute_type,
             num_threads=num_threads
         )
         if cached_transcription_result is None:
@@ -114,10 +121,11 @@ def transcribe(audio_file, use_cache=True, model_size_or_path=None, device=None,
                 diff = "\n".join(unified_diff(cached_lines, new_lines, fromfile='cached', tofile='new', lineterm=''))
                 diff_file = base + suffix + ".whisper2-diff"
                 write_file(diff_file, diff)
-                error(f"❌ Transcription output mismatch detected on {audio_file} new transcript saved to {transcript_file2} and diff to {diff_file}!")
+                logger.error(f"❌ Transcription output mismatch detected on {audio_file} new transcript saved to {transcript_file2} and diff to {diff_file}!")
                 raise ValueError(f"Transcription output changed between runs. Reproducibility issue detected.")
 
     return transcript
+
 
 def transcribe_fast_whisper(audio_file, model_size_or_path=None, device=None, compute_type=None, num_threads=None):
     """
@@ -139,14 +147,22 @@ def transcribe_fast_whisper(audio_file, model_size_or_path=None, device=None, co
     num_threads = num_threads or get_num_threads(device)
 
     start = time.time()
-    info(f"🔹 Running faster-whisper transcription on '{audio_file}' using model '{model_size_or_path}' on device '{device}' compute_type '{compute_type}' and num_threads='{num_threads}'")
+    logger.info(f"🔹 Running faster-whisper transcription on '{audio_file}' using model '{model_size_or_path}' on device '{device}' compute_type '{compute_type}' and num_threads='{num_threads}'")
+    model_load_start = time.time()
     whisper_model = get_transcription_model(
         model_size_or_path=model_size_or_path,
         device=device,
         compute_type=compute_type,
         num_threads=num_threads
     )
+    model_load_end = time.time()
+    logger.info(f"🔹 faster-whisper model '{model_size_or_path}' loaded in {model_load_end - model_load_start:.2f} seconds.")
+    transcribe_start = time.time()
     segments, _ = whisper_model.transcribe(audio_file, beam_size=5, temperature=0.0, word_timestamps=True)
+    transcribe_mid = time.time()
+    segments = list(segments)
+    transcribe_end = time.time()
+    logger.info(f"🔹 faster-whisper transcription returned in {transcribe_mid - transcribe_start:.2f} seconds and complete in {transcribe_end - transcribe_start:.2f} seconds.")
     transcript = []
     for segment in segments:
         transcript.append({
@@ -155,5 +171,5 @@ def transcribe_fast_whisper(audio_file, model_size_or_path=None, device=None, co
             "content": segment.text.strip()
         })
     end = time.time()
-    info(f"✅ Faster-whisper transcription complete in {end - start:.2f} seconds.")
+    logger.info(f"✅ Faster-whisper transcription complete in {end - start:.2f} seconds.")
     return transcript

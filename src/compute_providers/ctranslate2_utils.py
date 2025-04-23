@@ -1,6 +1,8 @@
 import os
-from utils.logging_utils import info
+import logging
 from ctranslate2 import get_cuda_device_count, get_supported_compute_types
+
+logger = logging.getLogger(__name__)
 
 def is_mps_available():
     """
@@ -123,7 +125,7 @@ def set_processing_threads(device=None, num_threads=None):
     num_threads = num_threads or get_num_threads(device)
 
     if _ctranslate2_num_threads is None or _ctranslate2_num_threads != num_threads:
-        info(f"🔹 Configuring CTranslate2 device {device} for {num_threads} threads")
+        logger.info(f"🔹 Configuring CTranslate2 device {device} for {num_threads} threads")
         os.environ["OMP_NUM_THREADS"] = str(num_threads)
         _ctranslate2_num_threads = num_threads
 

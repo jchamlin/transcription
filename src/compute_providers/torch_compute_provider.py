@@ -1,8 +1,9 @@
 import os
+import logging
 import torch
-from utils.logging_utils import info
 from compute_providers.compute_provider import ComputeProvider
 
+logger = logging.getLogger(__name__)
 
 class TorchComputeProvider(ComputeProvider):
     """
@@ -81,6 +82,6 @@ class TorchComputeProvider(ComputeProvider):
         num_threads = num_threads or self.get_num_threads(device)
 
         if self._num_threads is None or self._num_threads != num_threads:
-            info(f"🔹 Configuring Torch device {device} for {num_threads} threads")
+            logger.info(f"🔹 Configuring Torch device {device} for {num_threads} threads")
             torch.set_num_threads(num_threads)
             self._num_threads = num_threads

@@ -1,8 +1,9 @@
 import os
-from utils.logging_utils import info
+import logging
 from ctranslate2 import get_cuda_device_count, get_supported_compute_types
 from compute_providers.compute_provider import ComputeProvider
 
+logger = logging.getLogger(__name__)
 
 class CTranslate2ComputeProvider(ComputeProvider):
     """
@@ -59,6 +60,6 @@ class CTranslate2ComputeProvider(ComputeProvider):
         num_threads = num_threads or self.get_num_threads(device)
 
         if self._num_threads is None or self._num_threads != num_threads:
-            info(f"🔹 Configuring CTranslate2 device {device} for {num_threads} threads")
+            logger.info(f"🔹 Configuring CTranslate2 device {device} for {num_threads} threads")
             os.environ["OMP_NUM_THREADS"] = str(num_threads)
             self._num_threads = num_threads

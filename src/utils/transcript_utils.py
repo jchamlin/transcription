@@ -1,6 +1,8 @@
 import os
 import re
-from utils.logging_utils import info, error
+import logging
+
+logger = logging.getLogger(__name__)
 
 def format_timestamp(seconds):
     """
@@ -72,7 +74,7 @@ def load_transcript(transcript_file):
     if not os.path.exists(transcript_file):
         return None
 
-    info(f"🔹 Loading transcript from {transcript_file}")
+    logger.info(f"🔹 Loading transcript from {transcript_file}")
     with open(transcript_file, "r", encoding="utf-8") as f:
         lines = f.readlines()
 
@@ -82,7 +84,7 @@ def load_transcript(transcript_file):
             segment = parse_segment(line)
             transcript.append(segment)
         except Exception as e:
-            error(f"⚠️ Failed to parse line in cached transcript: {line.strip()} - {e}")
+            logger.error(f"⚠️ Failed to parse line in cached transcript: {line.strip()} - {e}")
 
     return transcript
 
@@ -90,7 +92,7 @@ def save_transcript(transcript_file, transcript):
     """
     Save the transcript to the disk
     """
-    info(f"🔹 Saving transcript to {transcript_file}")
+    logger.info(f"🔹 Saving transcript to {transcript_file}")
     with open(transcript_file, "w", encoding="utf-8", newline="\n") as f:
         for seg in transcript:
             f.write(format_segment(seg) + "\n")

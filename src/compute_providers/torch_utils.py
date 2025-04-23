@@ -1,7 +1,9 @@
 import os
-from utils.logging_utils import info
+import logging
 from lightning.fabric.accelerators.cuda import is_cuda_available
 import torch  # import this last so logging gets to set things up before it starts printing and warning
+
+logger = logging.getLogger(__name__)
 
 def is_mps_available():
     """
@@ -145,7 +147,7 @@ def set_processing_threads(device=None, num_threads=None):
     global _torch_num_threads
 
     if _torch_num_threads is None or _torch_num_threads != num_threads:
-        info(f"🔹 Configuring Torch device {device} for {num_threads} threads")
+        logger.info(f"🔹 Configuring Torch device {device} for {num_threads} threads")
         torch.set_num_threads(num_threads)
         _torch_num_threads = num_threads
 
